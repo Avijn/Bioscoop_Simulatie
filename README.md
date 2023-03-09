@@ -52,16 +52,16 @@ FIGUUR 1 - USER INTERFACE
  
 ## MoSCoW
 Hieronder worden de functionaliteiten binnen de applicatie uitgewerkt aan de hand van het MoSCoW model, hierbij kan gelezen worden per hoofdstuk wat de prioriteit per functionaliteit is.
-Must have
+### Must have
 -	Films moeten (tegelijkertijd) afgespeeld kunnen worden;
 -	Er moeten tickets verkocht kunnen worden;
 -	Er moet bijgehouden worden hoe veel tickets er per film en zaal verkocht worden om ervoor te zorgen dat er niet te veel tickets verkocht worden;
 -	De UI voor de bioscoop simulatie;
 -	Zalen moeten worden schoongemaakt zodra een film is afgelopen.
-Should have
+### Should have
 -	Mogelijkheid om zelf films toe te voegen;
 -	Eten en drinken moet verkocht / gekocht kunnen worden.
-Could have
+### Could have
 -	Mogelijkheid om verschillende soorten eten en drinken toe te voegen en aan te passen.
-Would be cool to implement if we have the time to do it
+### Would be cool to implement if we have the time to do it
 -	Er tycoon stijl game van maken.
