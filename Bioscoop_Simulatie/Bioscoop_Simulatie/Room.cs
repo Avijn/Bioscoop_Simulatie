@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,27 +8,26 @@ namespace Bioscoop_Simulatie
     class Room
     {
         public string Name { get; set; }
-        public Movie movie { get; set; }
-        public Status Status { get; set; }
+        public Movie Movie { get; set; }
+        public RoomStatus Status { get; set; }
         public int Seats { set; get; }
         public int TakenSeats { get; set; }
         public int CleanDuration { get; set; }
-        public Thread Thread;
 
         public Room(string name, int seats, int cleanDuration)
         {
             Name = name;
             Seats = seats;
-            Status = Status.Open;
+            Status = RoomStatus.Open;
             CleanDuration = cleanDuration;
-            Thread = new Thread(Play);
-            Thread = new Thread(Clean);
         }
 
         /// <summary>
         /// Adds a customer to the Room, this adds a takenseat unless the Takenseats equal the total amount of seats
         /// </summary>
-        /// <returns>Returns TRUE if the customer can get a seat.<br /> Returns false if the room is full</returns>
+        /// <returns>
+        /// Returns TRUE if the customer can get a seat.<br /> Returns false if the room is full
+        /// </returns>
         public bool AddReservation()
         {
             if (Seats != TakenSeats)
@@ -47,9 +44,9 @@ namespace Bioscoop_Simulatie
         /// </summary>
         public void Play()
         {
-            Status = Status.Playing;
+            Status = RoomStatus.Playing;
             TakenSeats = 0;
-            Thread.Sleep(movie.Duration);
+            Thread.Sleep(Movie.Duration);
         }
 
         /// <summary>
@@ -57,12 +54,20 @@ namespace Bioscoop_Simulatie
         /// </summary>
         public void Clean()
         {
-            Status = Status.Cleaning;
+            Status = RoomStatus.Cleaning;
             Thread.Sleep(CleanDuration);
+        }
+
+        /// <summary>
+        /// Opens the room for customers
+        /// </summary>
+        public void OpenRoom()
+        {
+            Status = RoomStatus.Open;
         }
     }
 
-    enum Status
+    enum RoomStatus
     {
         Open,
         Cleaning,
