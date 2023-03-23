@@ -8,13 +8,39 @@ namespace Bioscoop_Simulatie
 {
     internal class Checkout
     {
-        public Status Status { get; set; }
+        public CheckoutStatus Status { get; set; }
+
+        public Checkout()
+        {
+            Status = CheckoutStatus.Closed;
+        }
+
+        public Ticket SellTicket(Room room)
+        {
+            
+        }
+
+
+        public void OpenCheckout()
+        {
+            Status = CheckoutStatus.Open;
+        }
+
+        public void ProgressedCheckout()
+        {
+            Status = CheckoutStatus.InProgress;
+        }
+
+        public void CloseCheckout()
+        {
+            Status = CheckoutStatus.Closed;
+        }
     }
 
-    enum Status
+    enum CheckoutStatus
     {
         Open,
-        Closed,
-        InProgress
+        InProgress,
+        Closed
     }
 }
