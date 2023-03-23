@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bioscoop_Simulatie
 {
-    internal class Customer
+    class Customer
     {
         public int Age { get; }
         public Ticket Ticket { get; set; }
@@ -14,6 +14,12 @@ namespace Bioscoop_Simulatie
         public Customer(int age)
         {
             Age = age;
+        }
+
+        public int PickRandomMovie(int max)
+        {
+            Random random = new Random();
+            return random.Next(0, max);
         }
     }
 }
