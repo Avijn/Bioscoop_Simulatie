@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 
 namespace Bioscoop_Simulatie
 {
@@ -25,11 +27,26 @@ namespace Bioscoop_Simulatie
             SoldTickets = new Dictionary<Movie, int>();
         }
 
-        public void HandleCheckouts()
+        public void OpenCheckouts()
         {
             foreach (var checkout in Checkouts)
             {
-                ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
+                checkout.CheckoutOpen();
+            }
+        }
+
+        public void HandleCheckouts()
+        {
+            while (Queue.Count != 0)
+            {
+                foreach (var checkout in Checkouts)
+                {
+                    if (checkout.Status == CheckoutStatus.Open)
+                    {
+                        checkout.CheckoutInProgress();
+                        ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
+                    }
+                }
             }
         }
 
@@ -41,11 +58,6 @@ namespace Bioscoop_Simulatie
         private void HandleSingleCheckout(Object state)
         {
             Checkout checkout = (Checkout) state;
-
-            if (checkout.Status != CheckoutStatus.Open)
-                return;
-
-            checkout.CheckoutInProgress();
 
             Stopwatch stopwatch = Stopwatch.StartNew();
             SellToCustomer(checkout);
