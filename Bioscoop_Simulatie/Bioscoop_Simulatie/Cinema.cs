@@ -127,5 +127,13 @@ namespace Bioscoop_Simulatie
                 return customer;
             }
         }
+
+        public void AddCustomerToQueue(Customer customer)
+        {
+            lock(Queue)
+            {
+                Queue.Enqueue(customer);
+            }
+        }
     }
 }
