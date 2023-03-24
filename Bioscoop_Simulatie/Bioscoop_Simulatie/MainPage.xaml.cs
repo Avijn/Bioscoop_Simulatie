@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,9 +23,33 @@ namespace Bioscoop_Simulatie
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private Cinema Cinema = new Cinema();
+
         public MainPage()
         {
             this.InitializeComponent();
+            PopulateCinema();
+        }
+
+        private void PopulateCinema()
+        {
+            Random random = new Random();
+            //Debug.WriteLine($"Cinema.Queue.Count::{0}", Cinema.Queue.Count);
+            Queue<Customer> customers = new Queue<Customer>();
+
+            for (int i = 0; i < 15; ++i)
+            {
+                Customer customer = new Customer(random.Next(0, 51));
+                Debug.WriteLine($"customer::{0}", customer);
+
+            }
+
+            //Debug.WriteLine($"cinema.Queue.Count::{0}", Cinema.Queue.Count);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine($"cinema.Queue.Count::{0}", Cinema.Queue.Count);
         }
     }
 }
