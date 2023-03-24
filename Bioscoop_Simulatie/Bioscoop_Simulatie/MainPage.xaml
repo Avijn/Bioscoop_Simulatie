@@ -9,6 +9,159 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Cinema rooms-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <!--Room 1-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="6*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--Title-->
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="MOVIE_1" FontSize="30" x:Name="movieTitle_1"/>
+                <!--Movie-->
+                <Rectangle Grid.Row="1" Height="200" Width="350" Fill="LightGray" Name="movieScene_1" />
+                <!--Status-->
+                <Image Grid.Row="2" HorizontalAlignment="Right" Margin="0, 0, 10, 0" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" x:Name="movieStatus_1" Source="Assets/status_waiting.png"/>
+                <!--Seats-->
+                <Grid x:Name="seats_room_1" Grid.Row="3">
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                </Grid>
+            </Grid>
+
+            <!--Room 2-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="6*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--Title-->
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="MOVIE_2" FontSize="30" x:Name="movieTitle_2"/>
+                <!--Movie-->
+                <Rectangle Grid.Row="1" Height="200" Width="350" Fill="LightGray" Name="movieScene_2" />
+                <!--Status-->
+                <Image Grid.Row="2" HorizontalAlignment="Right" Margin="0, 0, 10, 0" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" x:Name="movieStatus_2" Source="Assets/status_waiting.png"/>
+                <!--Seats-->
+                <Grid x:Name="seats_room_2" Grid.Row="3">
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                </Grid>
+            </Grid>
+
+            <!--Room 3-->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="6*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--Title-->
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="MOVIE_2" FontSize="30" x:Name="movieTitle_3"/>
+                <!--Movie-->
+                <Rectangle Grid.Row="1" Height="200" Width="350" Fill="LightGray" Name="movieScene_3" />
+                <!--Status-->
+                <Image Grid.Row="2" HorizontalAlignment="Right" Margin="0, 0, 10, 0" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" x:Name="movieStatus_3" Source="Assets/status_waiting.png"/>
+                <!--Seats-->
+                <Grid x:Name="seats_room_3" Grid.Row="3">
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <!--Control Panel-->
+            <Grid Grid.Column="0">
+
+            </Grid>
+
+            <!--Rest Of Cinema-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--Register 1-->
+                <Rectangle Grid.Row="0" Height="100" Width="200" Fill="LightGray"/>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Register 1" VerticalAlignment="Top" FontSize="20"/>
+                <!--Status-->
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Status: waiting" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_1"/>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Queue-->
+                    <Rectangle Grid.Column="0" Height="100" Width="200" Fill="LightGray"/>
+                    <TextBlock Grid.Column="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Queue" VerticalAlignment="Top" FontSize="20"/>
+                    <!--Status-->
+                    <TextBlock Grid.Column="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="People waiting: 0" VerticalAlignment="Center" FontSize="20" x:Name="queueStatus"/>
+
+                    <!--Lobby-->
+                    <Rectangle Grid.Column="1" Height="100" Width="200" Fill="LightGray"/>
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Lobby" VerticalAlignment="Top" FontSize="20"/>
+                    <!--People waiting-->
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="People waiting: 0" VerticalAlignment="Center" FontSize="20" x:Name="lobbyStatus"/>
+                </Grid>
+
+                <!--Register 2-->
+                <Rectangle Grid.Row="2" Height="100" Width="200" Fill="LightGray"/>
+                <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Register 2" VerticalAlignment="Top" FontSize="20"/>
+                <!--Status-->
+                <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Status: waiting" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_2"/>
+            </Grid>
+        </Grid>
 
     </Grid>
 </Page>
