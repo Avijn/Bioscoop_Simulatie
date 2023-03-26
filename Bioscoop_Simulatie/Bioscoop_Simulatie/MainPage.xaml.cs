@@ -21,7 +21,7 @@ namespace Bioscoop_Simulatie
 {
     public sealed partial class MainPage : Page
     {
-        internal class Room
+        internal class UIRoom
         {
             /// <summary>
             /// Class to hold all the UI elements for a room
@@ -30,8 +30,16 @@ namespace Bioscoop_Simulatie
             /// <param name="title"></param>
             /// <param name="screen"></param>
             /// <param name="status"></param>
-            /// <param name="seats"></param>
-            public Room(TextBlock title, Rectangle screen, Image status, Grid seats) 
+            /// <param name="seats"></param
+
+            private TextBlock Title;
+            private Rectangle Screen;
+            private Image Status;
+            private List<Image> Seats { get; set; }
+            private int PeopleInRoom;
+            private int MaxSpace;
+
+            public UIRoom(TextBlock title, Rectangle screen, Image status, Grid seats)
             {
                 this.Title = title;
                 this.Screen = screen;
@@ -46,13 +54,6 @@ namespace Bioscoop_Simulatie
                     this.Seats.Add(seat as Image);
                 }
             }
-
-            private TextBlock Title;
-            private Rectangle Screen;
-            private Image Status;
-            private List<Image> Seats { get; set; }
-            private int PeopleInRoom;
-            private int MaxSpace;
 
             /// <summary>
             /// Add a person to the room and change a seat icon to taken
@@ -103,11 +104,11 @@ namespace Bioscoop_Simulatie
         /// <summary>
         /// Class to hold UI components for the 2 registers
         /// </summary>
-        internal class Register
+        internal class UIRegister
         {
             private TextBlock Status;
 
-            public Register(TextBlock status)
+            public UIRegister(TextBlock status)
             {
                 Status = status;
             }
@@ -125,11 +126,11 @@ namespace Bioscoop_Simulatie
         /// <summary>
         /// Class to hold UI components for the queue and lobby
         /// </summary>
-        internal class Station
+        internal class UIStation
         {
             private TextBlock PeopleWaiting;
 
-            public Station(TextBlock status)
+            public UIStation(TextBlock status)
             {
                 this.PeopleWaiting = status;
             }
@@ -144,29 +145,29 @@ namespace Bioscoop_Simulatie
             }
         }
 
-        private Room[] Rooms;
-        private Register Register_1;
-        private Register Register_2;
-        private Station Queue;
-        private Station Lobby;
+        private UIRoom[] Rooms;
+        private UIRegister Register_1;
+        private UIRegister Register_2;
+        private UIStation Queue;
+        private UIStation Lobby;
 
         public MainPage()
         {
             this.InitializeComponent();
 
             //Create cinema rooms
-            this.Rooms = new Room[3];
+            this.Rooms = new UIRoom[3];
             CreateRooms();
 
             //Set cinema registers
-            this.Register_1 = new Register(registerStatus_1); 
-            this.Register_2 = new Register(registerStatus_2);
+            this.Register_1 = new UIRegister(registerStatus_1); 
+            this.Register_2 = new UIRegister(registerStatus_2);
 
             //Set Queue
-            this.Queue = new Station(queueStatus);
+            this.Queue = new UIStation(queueStatus);
 
             //Set Lobby
-            this.Lobby = new Station(lobbyStatus);
+            this.Lobby = new UIStation(lobbyStatus);
         }
 
         /// <summary>
@@ -176,15 +177,15 @@ namespace Bioscoop_Simulatie
         private void CreateRooms()
         {
             //Create room 1
-            Room room1 = new Room(movieTitle_1, movieScene_1, movieStatus_1, seats_room_1);
+            UIRoom room1 = new UIRoom(movieTitle_1, movieScene_1, movieStatus_1, seats_room_1);
             Rooms[0] = room1;
 
             //Create room 2
-            Room room2 = new Room(movieTitle_2, movieScene_2, movieStatus_2, seats_room_2);
+            UIRoom room2 = new UIRoom(movieTitle_2, movieScene_2, movieStatus_2, seats_room_2);
             Rooms[1] = room2;
 
             //Create room 3
-            Room room3 = new Room(movieTitle_3, movieScene_3, movieStatus_3, seats_room_3);
+            UIRoom room3 = new UIRoom(movieTitle_3, movieScene_3, movieStatus_3, seats_room_3);
             Rooms[2] = room3;
         }
 
@@ -193,7 +194,7 @@ namespace Bioscoop_Simulatie
         /// </summary>
         /// <param name="nr"></param>
         /// <returns></returns>
-        private Room GetRoomByNr(int nr)
+        private UIRoom GetRoomByNr(int nr)
         {
             return this.Rooms[nr - 1];
         }
