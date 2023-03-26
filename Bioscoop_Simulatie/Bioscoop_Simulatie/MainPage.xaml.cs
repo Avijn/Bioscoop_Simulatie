@@ -15,8 +15,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+using static Bioscoop_Simulatie.MainPage;
 
 namespace Bioscoop_Simulatie
 {
@@ -38,6 +37,8 @@ namespace Bioscoop_Simulatie
                 this.Screen = screen;
                 this.Status = status;
                 this.Seats = new List<Image>();
+                this.PeopleInRoom = 0;
+                this.MaxSpace = 9;
 
                 //Get all seats from provided Grid
                 foreach (var seat in seats.Children)
@@ -45,20 +46,127 @@ namespace Bioscoop_Simulatie
                     this.Seats.Add(seat as Image);
                 }
             }
-            public TextBlock Title { get; set; }
-            public Rectangle Screen { get; set; }
-            public Image Status { get; set; }
-            public List<Image> Seats { get; set; }
+
+            private TextBlock Title;
+            private Rectangle Screen;
+            private Image Status;
+            private List<Image> Seats { get; set; }
+            private int PeopleInRoom;
+            private int MaxSpace;
+
+            /// <summary>
+            /// Add a person to the room and change a seat icon to taken
+            /// </summary>
+            public void AddPerson()
+            {
+                if(this.PeopleInRoom + 1 <= this.MaxSpace)
+                {
+                    //Room still has space
+                    this.PeopleInRoom++;
+
+                    Image seat = this.Seats[this.PeopleInRoom - 1];
+                    Console.WriteLine(seat);
+                    seat.Source = Utils.CreateImage("seat_taken.PNG");
+                }
+            }
+
+            public void ClearRoom()
+            {
+                this.Seats.ForEach(seat => seat.Source = Utils.CreateImage("seat_free.png")); 
+                this.PeopleInRoom = 0;
+            }
+
+            public void SetStatus(MovieStatus status)
+            {
+                if (status == MovieStatus.Playing)
+                {
+                    this.Status.Source = Utils.CreateImage("status_playing.PNG");
+                }
+                else if (status == MovieStatus.Cleaning)
+                {
+                    this.Status.Source = Utils.CreateImage("status_cleaning.PNG");
+                }
+                else
+                {
+                    this.Status.Source = Utils.CreateImage("status_waiting.PNG");
+                }
+            }
+
+            public void SetTitle(string title)
+            {
+                this.Title.Text = title;
+            }
+
+
+        }
+
+        /// <summary>
+        /// Class to hold UI components for the 2 registers
+        /// </summary>
+        internal class Register
+        {
+            private TextBlock Status;
+
+            public Register(TextBlock status)
+            {
+                Status = status;
+            }
+
+            /// <summary>
+            /// Set the status of a register, can by waiting, busy or closed
+            /// </summary>
+            /// <param name="status"></param>
+            public void SetStatus(RegisterStatus status)
+            {
+                this.Status.Text = "Status: " + status.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Class to hold UI components for the queue and lobby
+        /// </summary>
+        internal class Station
+        {
+            private TextBlock PeopleWaiting;
+
+            public Station(TextBlock status)
+            {
+                this.PeopleWaiting = status;
+            }
+
+            /// <summary>
+            /// Set the number of people waiting in a station (Queue or Lobby)
+            /// </summary>
+            /// <param name="nrOfPeople"></param>
+            public void SetPeopleWaiting(int nrOfPeople)
+            {
+                this.PeopleWaiting.Text = "People waiting: " + nrOfPeople.ToString();
+            }
         }
 
         private Room[] Rooms;
+        private Register Register_1;
+        private Register Register_2;
+        private Station Queue;
+        private Station Lobby;
 
         public MainPage()
         {
             this.InitializeComponent();
-            this.Rooms = new Room[3];
 
+            //Create cinema rooms
+            this.Rooms = new Room[3];
             CreateRooms();
+
+            //Set cinema registers
+            this.Register_1 = new Register(registerStatus_1); 
+            this.Register_2 = new Register(registerStatus_2);
+
+            //Set Queue
+            this.Queue = new Station(queueStatus);
+
+            //Set Lobby
+            this.Lobby = new Station(lobbyStatus);
         }
 
         /// <summary>
@@ -88,48 +196,6 @@ namespace Bioscoop_Simulatie
         private Room GetRoomByNr(int nr)
         {
             return this.Rooms[nr - 1];
-        }
-
-        /// <summary>
-        /// Sets the title of the given room
-        /// </summary>
-        /// <param name="roomNr"></param>
-        /// <param name="title"></param>
-        public void SetTitleByRoomNr(int roomNr, String title)
-        {
-            Room room = GetRoomByNr(roomNr);
-            room.Title.Text = title;
-        }
-
-        /// <summary>
-        /// Sets the status of the given room
-        /// </summary>
-        /// <param name="roomNr"></param>
-        /// <param name="status"></param>
-        public void SetStatusByRoomNr(int roomNr, MovieStatus status)
-        {
-            Room room = GetRoomByNr(roomNr);
-            if(status == MovieStatus.Playing)
-            {
-                room.Status.Source = CreateImage("/Assets/status_playing.PNG");
-            } else if(status == MovieStatus.Cleaning)
-            {
-                room.Status.Source = CreateImage("/Assets/status_cleaning.PNG");
-            } else
-            {
-                room.Status.Source = CreateImage("/Assets/status_waiting.PNG");
-            }
-        }
-
-        /// <summary>
-        /// Creates a bitmap image from a path
-        /// Is used for creating an image in the UI
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private BitmapImage CreateImage(String path)
-        {
-            return new BitmapImage(new Uri(path));
         }
     }
 }
