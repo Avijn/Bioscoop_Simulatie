@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 
 namespace Bioscoop_Simulatie
 {
@@ -61,16 +58,9 @@ namespace Bioscoop_Simulatie
         /// <summary>
         /// Opens the room for customers
         /// </summary>
-        public void OpenRoom()
+        public void Open()
         {
             Status = RoomStatus.Open;
         }
-    }
-
-    enum RoomStatus
-    {
-        Open,
-        Cleaning,
-        Playing
     }
 }
