@@ -28,6 +28,7 @@ namespace Bioscoop_Simulatie
         public UICheckout Checkout_2 { get; set; }
         public UIStation Queue { get; set; }
         public UIStation Lobby { get; set; }
+        public Cinema Cinema { get; set; }
 
         public MainPage()
         {
@@ -46,6 +47,14 @@ namespace Bioscoop_Simulatie
 
             //Set Lobby
             Lobby = new UIStation(lobbyStatus);
+
+            Cinema = new Cinema();
+            //DataContext = Cinema;
+
+            Cinema.Checkouts.Add(new Checkout());
+            Cinema.AddCustomerToQueue(new Customer(25));
+            Cinema.AddCustomerToQueue(new Customer(25));
+            Cinema.OpenCheckouts();
         }
 
         /// <summary>
@@ -75,6 +84,12 @@ namespace Bioscoop_Simulatie
         private UIRoom GetRoomByNr(int nr)
         {
             return Rooms[nr - 1];
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //Thread thread = new Thread(Cinema.HandleCheckouts);
+            Cinema.HandleCheckouts();
         }
     }
 }

@@ -119,6 +119,7 @@
 
             <!--Control Panel-->
             <Grid Grid.Column="0">
+                <Button Content="Button" Height="82" Margin="0,370,0,0" VerticalAlignment="Top" Width="144" HorizontalAlignment="Center" Click="Button_Click"/>
 
             </Grid>
 
@@ -159,7 +160,7 @@
                 <Rectangle Grid.Row="2" Height="100" Width="200" Fill="LightGray"/>
                 <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Register 2" VerticalAlignment="Top" FontSize="20"/>
                 <!--Status-->
-                <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Status: waiting" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_2"/>
+                <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Checkouts[0].Status, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_2"/>
             </Grid>
         </Grid>
 

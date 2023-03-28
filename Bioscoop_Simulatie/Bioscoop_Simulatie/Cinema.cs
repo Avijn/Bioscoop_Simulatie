@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using Windows.Data.Json;
 
 namespace Bioscoop_Simulatie
 {
-    public class Cinema
+    public class Cinema/* : INotifyPropertyChanged*/
     {
         public Queue<Customer> Queue { get; set; }
         public List<Checkout> Checkouts { get; set; }
@@ -28,18 +29,21 @@ namespace Bioscoop_Simulatie
             SoldTickets = new Dictionary<Movie, int>();
 
             // For "Testing" purposes
-			Rooms.Add(new Room("Room 1", 15, 5000));
-			Rooms.Add(new Room("Room 2", 15, 6000));
+            Rooms.Add(new Room("Room 1", 15, 5000));
+            Rooms.Add(new Room("Room 2", 15, 6000));
             Rooms.Add(new Room("Room 3", 45, 3000));
 
             // For ""Testing"" purposes
-			Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
-			Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
+            Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
+            Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
             Rooms[2].Movie = new Movie("The lord of the rings: fellowship of the ring", 15000, 16);
 
             // For """Testing""" purposes
             RunRoomsFlag = false;
-		}
+        }
+
+        //public event PropertyChangedEventHandler PropertyChanged;
+
 
         public void OpenCheckouts()
         {
@@ -51,14 +55,22 @@ namespace Bioscoop_Simulatie
 
         public void HandleCheckouts()
         {
-            while (Queue.Count != 0)
+            while (Queue.Count >= 0)
             {
                 foreach (var checkout in Checkouts)
                 {
-                    if (checkout.Status == CheckoutStatus.Open)
+                    if (checkout.Status == CheckoutStatus.Open && Queue.Count != 0)
                     {
+                        Debug.WriteLine("inside if checkout open");
                         checkout.CheckoutInProgress();
                         ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
+                        continue;
+                    }
+
+                    if (checkout.Status == CheckoutStatus.Finished)
+                    {
+                        Debug.WriteLine("inside if checkout finished");
+                        checkout.CheckoutOpen();
                     }
                 }
             }
@@ -77,13 +89,13 @@ namespace Bioscoop_Simulatie
             SellToCustomer(checkout);
             stopwatch.Stop();
 
-            if (stopwatch.ElapsedMilliseconds < 1500)
+            if (stopwatch.ElapsedMilliseconds < 5000)
             {
-                int sleepTime = (int) (1500 - stopwatch.ElapsedMilliseconds);
+                int sleepTime = (int) (5000 - stopwatch.ElapsedMilliseconds);
                 Thread.Sleep(sleepTime);
             }
 
-            checkout.CheckoutOpen();
+            checkout.CheckoutFinished();
         }
 
         /// <summary>
@@ -96,7 +108,8 @@ namespace Bioscoop_Simulatie
             if (customer == null)
                 return;
 
-            Room room = Rooms[customer.PickRandomMovie(Rooms.Count)];
+            int max = Rooms.Count == 0 ? 1 : Rooms.Count;
+            Room room = Rooms[customer.PickRandomMovie(max)];
             Ticket ticket = checkout.SellTicket(room, customer);
             if (ticket == null)
                 return;
@@ -162,11 +175,6 @@ namespace Bioscoop_Simulatie
             }
         }
 
-        public void OpenRoom(Room room)
-        {
-            room.Open();
-        }
-
         public void PlayRoom(Room room) 
         {
             room.Thread = new Thread(room.Play);
@@ -191,7 +199,6 @@ namespace Bioscoop_Simulatie
             //cleanRoom.Start();
         }
 
-        // For """"Testing"""" purposes, I swear
         public void UnnamedWhileLoop()
         {
             RunRoomsFlag = !RunRoomsFlag;
@@ -228,5 +235,5 @@ namespace Bioscoop_Simulatie
                 }
 			}
 		}
-	}
+    }
 }
