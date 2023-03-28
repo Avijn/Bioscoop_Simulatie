@@ -43,12 +43,10 @@ namespace Bioscoop_Simulatie
         /// </summary>
         public void Play()
         {
-            //Status = RoomStatus.Playing;
             TakenSeats = 0;
             Debug.WriteLine("Start playing movie");
             Thread.Sleep(Movie.Duration);
 			Debug.WriteLine("Finished playing movie");
-            //Status = RoomStatus.Cleaning;
             Status = RoomStatus.FinishedPlaying;
 		}
 
@@ -57,7 +55,6 @@ namespace Bioscoop_Simulatie
         /// </summary>
         public void Clean()
         {
-			//Status = RoomStatus.Cleaning;
 			Debug.WriteLine("Start cleaning room");
 			Thread.Sleep(CleanDuration);
 			Debug.WriteLine("Finished cleaning room");

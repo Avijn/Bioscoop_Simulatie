@@ -31,10 +31,12 @@ namespace Bioscoop_Simulatie
             // For "Testing" purposes
 			Rooms.Add(new Room("Room 1", 15, 5000));
 			Rooms.Add(new Room("Room 2", 15, 6000));
+            Rooms.Add(new Room("Room 3", 45, 3000));
 
             // For ""Testing"" purposes
-			Rooms[0].Movie = new Movie("Shrek 4", 15000, 13);
+			Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
 			Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
+            Rooms[2].Movie = new Movie("The lord of the rings: fellowship of the ring", 15000, 16);
 
             // For """Testing""" purposes
             RunRoomsFlag = false;
@@ -216,17 +218,19 @@ namespace Bioscoop_Simulatie
                 {
                     case RoomStatus.Open:
 						room.Status = RoomStatus.ReadyToPlay;
-                        //Insert logic to add people to room here
+                        //Todo Insert logic to add people to room here
 						break;
                     case RoomStatus.ReadyToPlay:
 						room.Status = RoomStatus.Playing;
 						PlayRoom(room);
 						break;
                     case RoomStatus.FinishedPlaying:
+						//Todo Throw out the people in the room
 						room.Status = RoomStatus.Cleaning;
 						CleanRoom(room);
 						break;
                     case RoomStatus.FinishedCleaning:
+                        //Insert logic to change movies etc.
 						room.Status = RoomStatus.Open;
 						break;
                 }
