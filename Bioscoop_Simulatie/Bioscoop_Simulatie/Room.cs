@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Bioscoop_Simulatie
 {
-    class Room
+    public class Room
     {
         public string Name { get; set; }
         public Movie Movie { get; set; }

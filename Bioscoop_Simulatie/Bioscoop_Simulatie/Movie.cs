@@ -1,6 +1,6 @@
 ﻿namespace Bioscoop_Simulatie
 {
-    class Movie
+    public class Movie
     {
         public string Title { get; }
         public int Duration { get; }

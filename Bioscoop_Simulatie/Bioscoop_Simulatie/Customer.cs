@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bioscoop_Simulatie
 {
-    class Customer
+    public class Customer
     {
         public int Age { get; }
         public Ticket Ticket { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bioscoop_Simulatie
 {
-    class Checkout
+    public class Checkout
     {
         public CheckoutStatus Status { get; set; }
 

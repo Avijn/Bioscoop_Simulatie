@@ -10,14 +10,13 @@ using Windows.Data.Json;
 
 namespace Bioscoop_Simulatie
 {
-    class Cinema
+    public class Cinema
     {
         public Queue<Customer> Queue { get; set; }
         public List<Checkout> Checkouts { get; set; }
         public List<Customer> Lobby { get; set; }
         public List<Room> Rooms { get; set; }
         public Dictionary<Movie, int> SoldTickets { get; set; }
-
         public bool RunRoomsFlag { get; set; }
 
         public Cinema()
@@ -195,14 +194,7 @@ namespace Bioscoop_Simulatie
         // For """"Testing"""" purposes, I swear
         public void UnnamedWhileLoop()
         {
-            if(RunRoomsFlag)
-            {
-                RunRoomsFlag = false;
-            }
-            else
-			{
-                RunRoomsFlag = true;
-			}
+            RunRoomsFlag = !RunRoomsFlag;
 
             while(RunRoomsFlag)//TODO Becomes open/close button or something
 			{

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bioscoop_Simulatie
 {
-    class Ticket
+    public class Ticket
     {
         public Movie Movie { get; }
         public string RoomName { get; }
