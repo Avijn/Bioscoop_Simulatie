@@ -34,7 +34,6 @@ namespace Bioscoop_Simulatie
         private void PopulateCinema()
         {
             Random random = new Random();
-            //Debug.WriteLine($"Cinema.Queue.Count::{0}", Cinema.Queue.Count);
             Queue<Customer> customers = new Queue<Customer>();
 
             for (int i = 0; i < 15; ++i)
@@ -43,8 +42,6 @@ namespace Bioscoop_Simulatie
                 Debug.WriteLine($"customer::{0}", customer);
 
             }
-
-            //Debug.WriteLine($"cinema.Queue.Count::{0}", Cinema.Queue.Count);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
