@@ -50,11 +50,4 @@ namespace Bioscoop_Simulatie
             //update UI with new status
         }
     }
-
-    enum CheckoutStatus
-    {
-        Open,
-        InProgress,
-        Closed
-    }
 }

@@ -22,153 +22,30 @@ namespace Bioscoop_Simulatie
 {
     public sealed partial class MainPage : Page
     {
-        internal class UIRoom
-        {
-            /// <summary>
-            /// Class to hold all the UI elements for a room
-            /// On creating the object it will take all of the seats from the seats grid and put them into a list
-            /// </summary>
-            /// <param name="title"></param>
-            /// <param name="screen"></param>
-            /// <param name="status"></param>
-            /// <param name="seats"></param
 
-            private TextBlock Title;
-            private Rectangle Screen;
-            private Image Status;
-            private List<Image> Seats { get; set; }
-            private int PeopleInRoom;
-            private int MaxSpace;
-
-            public UIRoom(TextBlock title, Rectangle screen, Image status, Grid seats)
-            {
-                this.Title = title;
-                this.Screen = screen;
-                this.Status = status;
-                this.Seats = new List<Image>();
-                this.PeopleInRoom = 0;
-                this.MaxSpace = 9;
-
-                //Get all seats from provided Grid
-                foreach (var seat in seats.Children)
-                {
-                    this.Seats.Add(seat as Image);
-                }
-            }
-
-            /// <summary>
-            /// Add a person to the room and change a seat icon to taken
-            /// </summary>
-            public void AddPerson()
-            {
-                if(this.PeopleInRoom + 1 <= this.MaxSpace)
-                {
-                    //Room still has space
-                    this.PeopleInRoom++;
-
-                    Image seat = this.Seats[this.PeopleInRoom - 1];
-                    Console.WriteLine(seat);
-                    seat.Source = Utils.CreateImage("seat_taken.PNG");
-                }
-            }
-
-            public void ClearRoom()
-            {
-                this.Seats.ForEach(seat => seat.Source = Utils.CreateImage("seat_free.png")); 
-                this.PeopleInRoom = 0;
-            }
-
-            public void SetStatus(MovieStatus status)
-            {
-                if (status == MovieStatus.Playing)
-                {
-                    this.Status.Source = Utils.CreateImage("status_playing.PNG");
-                }
-                else if (status == MovieStatus.Cleaning)
-                {
-                    this.Status.Source = Utils.CreateImage("status_cleaning.PNG");
-                }
-                else
-                {
-                    this.Status.Source = Utils.CreateImage("status_waiting.PNG");
-                }
-            }
-
-            public void SetTitle(string title)
-            {
-                this.Title.Text = title;
-            }
-
-
-        }
-
-        /// <summary>
-        /// Class to hold UI components for the 2 registers
-        /// </summary>
-        internal class UIRegister
-        {
-            private TextBlock Status;
-
-            public UIRegister(TextBlock status)
-            {
-                Status = status;
-            }
-
-            /// <summary>
-            /// Set the status of a register, can by waiting, busy or closed
-            /// </summary>
-            /// <param name="status"></param>
-            public void SetStatus(RegisterStatus status)
-            {
-                this.Status.Text = "Status: " + status.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Class to hold UI components for the queue and lobby
-        /// </summary>
-        internal class UIStation
-        {
-            private TextBlock PeopleWaiting;
-
-            public UIStation(TextBlock status)
-            {
-                this.PeopleWaiting = status;
-            }
-
-            /// <summary>
-            /// Set the number of people waiting in a station (Queue or Lobby)
-            /// </summary>
-            /// <param name="nrOfPeople"></param>
-            public void SetPeopleWaiting(int nrOfPeople)
-            {
-                this.PeopleWaiting.Text = "People waiting: " + nrOfPeople.ToString();
-            }
-        }
-
-        private UIRoom[] Rooms;
-        private UIRegister Register_1;
-        private UIRegister Register_2;
-        private UIStation Queue;
-        private UIStation Lobby;
+        public UIRoom[] Rooms { get; set; }
+        public UICheckout Checkout_1 { get; set; }
+        public UICheckout Checkout_2 { get; set; }
+        public UIStation Queue { get; set; }
+        public UIStation Lobby { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
 
             //Create cinema rooms
-            this.Rooms = new UIRoom[3];
+            Rooms = new UIRoom[3];
             CreateRooms();
 
             //Set cinema registers
-            this.Register_1 = new UIRegister(registerStatus_1); 
-            this.Register_2 = new UIRegister(registerStatus_2);
+            Checkout_1 = new UICheckout(registerStatus_1); 
+            Checkout_2 = new UICheckout(registerStatus_2);
 
             //Set Queue
-            this.Queue = new UIStation(queueStatus);
+            Queue = new UIStation(queueStatus);
 
             //Set Lobby
-            this.Lobby = new UIStation(lobbyStatus);
+            Lobby = new UIStation(lobbyStatus);
         }
 
         /// <summary>
@@ -197,7 +74,7 @@ namespace Bioscoop_Simulatie
         /// <returns></returns>
         private UIRoom GetRoomByNr(int nr)
         {
-            return this.Rooms[nr - 1];
+            return Rooms[nr - 1];
         }
     }
 }
