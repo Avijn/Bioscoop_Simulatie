@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace Bioscoop_Simulatie
 {
-    internal class UIRoom
+    public class UIRoom
     {
         /// <summary>
         /// Class to hold all the UI elements for a room
@@ -64,13 +64,13 @@ namespace Bioscoop_Simulatie
             this.PeopleInRoom = 0;
         }
 
-        public void SetStatus(MovieStatus status)
+        public void SetStatus(RoomStatus status)
         {
-            if (status == MovieStatus.Playing)
+            if (status == RoomStatus.Playing)
             {
                 this.Status.Source = Utils.CreateImage("status_playing.PNG");
             }
-            else if (status == MovieStatus.Cleaning)
+            else if (status == RoomStatus.Cleaning)
             {
                 this.Status.Source = Utils.CreateImage("status_cleaning.PNG");
             }

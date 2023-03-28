@@ -23,29 +23,29 @@ namespace Bioscoop_Simulatie
 {
     public sealed partial class MainPage : Page
     {
-        private UIRoom[] Rooms;
-        private UIRegister Register_1;
-        private UIRegister Register_2;
-        private UIStation Queue;
-        private UIStation Lobby;
+        public UIRoom[] Rooms { get; set; }
+        public UICheckout Checkout_1 { get; set; }
+        public UICheckout Checkout_2 { get; set; }
+        public UIStation Queue { get; set; }
+        public UIStation Lobby { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
 
             //Create cinema rooms
-            this.Rooms = new UIRoom[3];
+            Rooms = new UIRoom[3];
             CreateRooms();
 
             //Set cinema registers
-            this.Register_1 = new UIRegister(registerStatus_1); 
-            this.Register_2 = new UIRegister(registerStatus_2);
+            Checkout_1 = new UICheckout(registerStatus_1); 
+            Checkout_2 = new UICheckout(registerStatus_2);
 
             //Set Queue
-            this.Queue = new UIStation(queueStatus);
+            Queue = new UIStation(queueStatus);
 
             //Set Lobby
-            this.Lobby = new UIStation(lobbyStatus);
+            Lobby = new UIStation(lobbyStatus);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Bioscoop_Simulatie
         /// <returns></returns>
         private UIRoom GetRoomByNr(int nr)
         {
-            return this.Rooms[nr - 1];
+            return Rooms[nr - 1];
         }
     }
 }
