@@ -3,7 +3,10 @@
 	public enum RoomStatus
 	{
 		Open,
+		ReadyToPlay,
+		Playing,
+		FinishedPlaying,
 		Cleaning,
-		Playing
+		FinishedCleaning
 	}
 }

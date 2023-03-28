@@ -10,6 +10,7 @@ namespace Bioscoop_Simulatie
     /// <summary>
     /// Class to hold UI components for the queue and lobby
     /// </summary>
+    
     public class UIStation
     {
         private TextBlock PeopleWaiting;

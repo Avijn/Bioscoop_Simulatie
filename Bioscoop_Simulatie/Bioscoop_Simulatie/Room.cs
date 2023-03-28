@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 
 namespace Bioscoop_Simulatie
 {
@@ -10,6 +11,7 @@ namespace Bioscoop_Simulatie
         public int Seats { set; get; }
         public int TakenSeats { get; set; }
         public int CleanDuration { get; set; }
+        public Thread Thread { get; set; }
 
         public Room(string name, int seats, int cleanDuration)
         {
@@ -41,19 +43,23 @@ namespace Bioscoop_Simulatie
         /// </summary>
         public void Play()
         {
-            Status = RoomStatus.Playing;
             TakenSeats = 0;
+            Debug.WriteLine("Start playing movie");
             Thread.Sleep(Movie.Duration);
-        }
+			Debug.WriteLine("Finished playing movie");
+            Status = RoomStatus.FinishedPlaying;
+		}
 
         /// <summary>
         /// Starts cleaning the room, waits the given duration for cleaning
         /// </summary>
         public void Clean()
         {
-            Status = RoomStatus.Cleaning;
-            Thread.Sleep(CleanDuration);
-        }
+			Debug.WriteLine("Start cleaning room");
+			Thread.Sleep(CleanDuration);
+			Debug.WriteLine("Finished cleaning room");
+            Status = RoomStatus.FinishedCleaning;
+		}
 
         /// <summary>
         /// Opens the room for customers
@@ -62,5 +68,6 @@ namespace Bioscoop_Simulatie
         {
             Status = RoomStatus.Open;
         }
+
     }
 }

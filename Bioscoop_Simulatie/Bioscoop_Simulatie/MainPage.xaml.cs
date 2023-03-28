@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,7 +23,6 @@ namespace Bioscoop_Simulatie
 {
     public sealed partial class MainPage : Page
     {
-
         public UIRoom[] Rooms { get; set; }
         public UICheckout Checkout_1 { get; set; }
         public UICheckout Checkout_2 { get; set; }
