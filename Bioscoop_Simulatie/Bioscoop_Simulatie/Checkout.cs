@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Bioscoop_Simulatie
 {
-    class Checkout
+    public class Checkout : INotifyPropertyChanged
     {
         public CheckoutStatus Status { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Checkout()
         {
@@ -35,26 +38,32 @@ namespace Bioscoop_Simulatie
         public void CheckoutOpen()
         {
             Status = CheckoutStatus.Open;
+            OnPropertyChanged("Status");
             //update UI with new status
         }
 
         public void CheckoutInProgress()
         {
             Status = CheckoutStatus.InProgress;
+            OnPropertyChanged("Status");
             //update UI with new status
+        }
+
+        public void CheckoutFinished()
+        {
+            Status = CheckoutStatus.Finished;
         }
 
         public void CheckoutClosed()
         {
             Status = CheckoutStatus.Closed;
+            OnPropertyChanged("Status");
             //update UI with new status
         }
-    }
 
-    enum CheckoutStatus
-    {
-        Open,
-        InProgress,
-        Closed
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

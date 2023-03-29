@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,17 +15,26 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+using Windows.UI.Xaml.Shapes;
+using static Bioscoop_Simulatie.MainPage;
 
 namespace Bioscoop_Simulatie
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
+        public UIRoom[] UIRooms { get; set; }
+        public UICheckout Checkout_1 { get; set; }
+        public UICheckout Checkout_2 { get; set; }
+        public UIStation Queue { get; set; }
+        public UIStation Lobby { get; set; }
+        public Cinema Cinema { get; set; }
+
+
+		public List<Room> Rooms { get; set; }
+		public List<Movie> Movies { get; set; }
+
         public MainPage()
         {
             this.InitializeComponent();

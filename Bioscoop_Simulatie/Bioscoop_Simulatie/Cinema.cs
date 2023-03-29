@@ -1,24 +1,29 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Data.Json;
+using Windows.Foundation;
+using Windows.System;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace Bioscoop_Simulatie
 {
-    class Cinema
+    public class Cinema/* : INotifyPropertyChanged*/
     {
         public Queue<Customer> Queue { get; set; }
         public List<Checkout> Checkouts { get; set; }
         public List<Customer> Lobby { get; set; }
         public List<Room> Rooms { get; set; }
         public Dictionary<Movie, int> SoldTickets { get; set; }
-
         public bool RunRoomsFlag { get; set; }
+        public bool RunCheckoutsFlag { get; set; }
 
         public Cinema()
         {
@@ -28,19 +33,23 @@ namespace Bioscoop_Simulatie
             Rooms = new List<Room>();
             SoldTickets = new Dictionary<Movie, int>();
 
-            // For "Testing" purposes
-			Rooms.Add(new Room("Room 1", 15, 5000));
-			Rooms.Add(new Room("Room 2", 15, 6000));
-            Rooms.Add(new Room("Room 3", 45, 3000));
+            //// For "Testing" purposes
+            //Rooms.Add(new Room("Room 1", 15, 5000));
+            //Rooms.Add(new Room("Room 2", 15, 6000));
+            //Rooms.Add(new Room("Room 3", 45, 3000));
 
-            // For ""Testing"" purposes
-			Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
-			Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
-            Rooms[2].Movie = new Movie("The lord of the rings: fellowship of the ring", 15000, 16);
+            //// For ""Testing"" purposes
+            //Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
+            //Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
+            //Rooms[2].Movie = new Movie("The lord of the rings: fellowship of the ring", 15000, 16);
 
             // For """Testing""" purposes
             RunRoomsFlag = false;
-		}
+            RunCheckoutsFlag = false;
+        }
+
+        //public event PropertyChangedEventHandler PropertyChanged;
+
 
         public void OpenCheckouts()
         {
@@ -50,19 +59,50 @@ namespace Bioscoop_Simulatie
             }
         }
 
-        public void HandleCheckouts()
+        public async void HandleCheckouts()
         {
-            while (Queue.Count != 0)
+            while (Queue.Count > 0 || RunCheckoutsFlag)
             {
                 foreach (var checkout in Checkouts)
                 {
-                    if (checkout.Status == CheckoutStatus.Open)
+                    if (checkout.Status == CheckoutStatus.Open && Queue.Count != 0)
                     {
-                        checkout.CheckoutInProgress();
+                        RunCheckoutsFlag = true;
+                        await ExecuteOnUIThread(() =>
+                        {
+                            checkout.CheckoutInProgress();
+                        });
+
                         ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
+                        continue;
+                    }
+
+                    if (checkout.Status == CheckoutStatus.Finished)
+                    {
+                        await ExecuteOnUIThread(() =>
+                        {
+                            checkout.CheckoutOpen();
+                        });
+
+                        if (!CheckoutsInProgress())
+                        {
+                            RunCheckoutsFlag = false;
+                        }
                     }
                 }
             }
+        }
+
+        private bool CheckoutsInProgress()
+        {
+            List<bool> bools = new List<bool>();
+
+            foreach (var checkout in Checkouts)
+            {
+                bools.Add(checkout.Status == CheckoutStatus.InProgress);
+            }
+
+            return bools.Contains(true);
         }
 
         /// <summary>
@@ -78,13 +118,13 @@ namespace Bioscoop_Simulatie
             SellToCustomer(checkout);
             stopwatch.Stop();
 
-            if (stopwatch.ElapsedMilliseconds < 1500)
+            if (stopwatch.ElapsedMilliseconds < 5000)
             {
-                int sleepTime = (int) (1500 - stopwatch.ElapsedMilliseconds);
+                int sleepTime = (int) (5000 - stopwatch.ElapsedMilliseconds);
                 Thread.Sleep(sleepTime);
             }
 
-            checkout.CheckoutOpen();
+            checkout.CheckoutFinished();
         }
 
         /// <summary>
@@ -94,7 +134,7 @@ namespace Bioscoop_Simulatie
         private void SellToCustomer(Checkout checkout)
         {
             Customer customer = GetNextCustomer();
-            if (customer == null)
+            if (customer == null || Rooms.Count == 0)
                 return;
 
             Room room = Rooms[customer.PickRandomMovie(Rooms.Count)];
@@ -163,11 +203,6 @@ namespace Bioscoop_Simulatie
             }
         }
 
-        public void OpenRoom(Room room)
-        {
-            room.Open();
-        }
-
         public void PlayRoom(Room room) 
         {
             room.Thread = new Thread(room.Play);
@@ -192,17 +227,9 @@ namespace Bioscoop_Simulatie
             //cleanRoom.Start();
         }
 
-        // For """"Testing"""" purposes, I swear
         public void UnnamedWhileLoop()
         {
-            if(RunRoomsFlag)
-            {
-                RunRoomsFlag = false;
-            }
-            else
-			{
-                RunRoomsFlag = true;
-			}
+            RunRoomsFlag = !RunRoomsFlag;
 
             while(RunRoomsFlag)//TODO Becomes open/close button or something
 			{
@@ -259,5 +286,10 @@ namespace Bioscoop_Simulatie
                 }
 			}
 		}
-	}
+
+        private IAsyncAction ExecuteOnUIThread(DispatchedHandler action)
+        {
+            return Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, action);
+        }
+    }
 }
