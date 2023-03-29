@@ -128,7 +128,9 @@ namespace Bioscoop_Simulatie
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //Thread thread = new Thread(Cinema.HandleCheckouts);
-            Cinema.HandleCheckouts();
-        }
+            //Cinema.HandleCheckouts();
+            Thread thread = new Thread(Cinema.UnnamedWhileLoop);
+            thread.Start();
+		}
     }
 }
