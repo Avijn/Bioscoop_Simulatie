@@ -43,10 +43,12 @@ namespace Bioscoop_Simulatie
 			//DataContext = Cinema;
 
 			//Create movies
+            Movies = new List<Movie>();
 			CreateMovies();
 
 			//Create cinema rooms
 			UIRooms = new UIRoom[3];
+            Rooms= new List<Room>();
             CreateRooms();
 
             //Bind movies to rooms
