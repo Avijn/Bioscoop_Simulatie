@@ -15,7 +15,7 @@ using Windows.UI.Xaml;
 
 namespace Bioscoop_Simulatie
 {
-    public class Cinema/* : INotifyPropertyChanged*/
+    public class Cinema : INotifyPropertyChanged
     {
         public Queue<Customer> Queue { get; set; }
         public List<Checkout> Checkouts { get; set; }
@@ -24,6 +24,7 @@ namespace Bioscoop_Simulatie
         public Dictionary<Movie, int> SoldTickets { get; set; }
         public bool RunRoomsFlag { get; set; }
         public bool RunCheckoutsFlag { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Cinema()
         {
@@ -33,29 +34,21 @@ namespace Bioscoop_Simulatie
             Rooms = new List<Room>();
             SoldTickets = new Dictionary<Movie, int>();
 
-            //// For "Testing" purposes
-            //Rooms.Add(new Room("Room 1", 15, 5000));
-            //Rooms.Add(new Room("Room 2", 15, 6000));
-            //Rooms.Add(new Room("Room 3", 45, 3000));
-
-            //// For ""Testing"" purposes
-            //Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
-            //Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
-            //Rooms[2].Movie = new Movie("The lord of the rings: fellowship of the ring", 15000, 16);
-
-            // For """Testing""" purposes
             RunRoomsFlag = false;
             RunCheckoutsFlag = false;
         }
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-
-        public void OpenCheckouts()
+        public async void OpenCheckouts()
         {
             foreach (var checkout in Checkouts)
             {
-                checkout.CheckoutOpen();
+                if (checkout.Status == CheckoutStatus.Closed)
+                {
+                    await ExecuteOnUIThread(() => checkout.CheckoutOpen());
+                    continue;
+                }
+
+                await ExecuteOnUIThread(() => checkout.CheckoutClosed());
             }
         }
 
@@ -68,26 +61,15 @@ namespace Bioscoop_Simulatie
                     if (checkout.Status == CheckoutStatus.Open && Queue.Count != 0)
                     {
                         RunCheckoutsFlag = true;
-                        await ExecuteOnUIThread(() =>
-                        {
-                            checkout.CheckoutInProgress();
-                        });
+                        await ExecuteOnUIThread(() => checkout.CheckoutInProgress());
 
                         ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
                         continue;
                     }
 
-                    if (checkout.Status == CheckoutStatus.Finished)
+                    if (!CheckoutsInProgress())
                     {
-                        await ExecuteOnUIThread(() =>
-                        {
-                            checkout.CheckoutOpen();
-                        });
-
-                        if (!CheckoutsInProgress())
-                        {
-                            RunCheckoutsFlag = false;
-                        }
+                        RunCheckoutsFlag = false;
                     }
                 }
             }
@@ -110,21 +92,25 @@ namespace Bioscoop_Simulatie
         /// Handles the full transaction between the checkout and the customer
         /// </summary>
         /// <param name="state">The checkout object</param>
-        private void HandleSingleCheckout(Object state)
+        private async void HandleSingleCheckout(Object state)
         {
-            Checkout checkout = (Checkout) state;
+            Checkout checkout = (Checkout)state;
 
             Stopwatch stopwatch = Stopwatch.StartNew();
             SellToCustomer(checkout);
             stopwatch.Stop();
 
-            if (stopwatch.ElapsedMilliseconds < 5000)
+            if (stopwatch.ElapsedMilliseconds < 1500)
             {
-                int sleepTime = (int) (5000 - stopwatch.ElapsedMilliseconds);
+                int sleepTime = (int)(1500 - stopwatch.ElapsedMilliseconds);
                 Thread.Sleep(sleepTime);
             }
 
-            checkout.CheckoutFinished();
+            await ExecuteOnUIThread(() => 
+            {
+                checkout.CheckoutOpen();
+                Thread.Sleep(1000);
+            });
         }
 
         /// <summary>
@@ -175,6 +161,7 @@ namespace Bioscoop_Simulatie
             lock(Lobby)
             {
                 Lobby.Add(customer);
+                ExecuteOnUIThread(() => OnPropertyChanged("Lobby"));
             }
         }
 
@@ -190,17 +177,20 @@ namespace Bioscoop_Simulatie
                     return null;
 
                 Customer customer = Queue.Dequeue();
-                //update UI with new amount of customers in queue
+
+                ExecuteOnUIThread(() => OnPropertyChanged("Queue"));
                 return customer;
             }
         }
 
-        public void AddCustomerToQueue(Customer customer)
+        public async void AddCustomerToQueue(Customer customer)
         {
             lock(Queue)
             {
                 Queue.Enqueue(customer);
             }
+
+            await ExecuteOnUIThread(() => OnPropertyChanged("Queue"));
         }
 
         public void PlayRoom(Room room) 
@@ -290,6 +280,11 @@ namespace Bioscoop_Simulatie
         private IAsyncAction ExecuteOnUIThread(DispatchedHandler action)
         {
             return Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, action);
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

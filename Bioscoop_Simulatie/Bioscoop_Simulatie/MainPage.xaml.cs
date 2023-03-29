@@ -68,7 +68,6 @@ namespace Bioscoop_Simulatie
             //Set Lobby
             Lobby = new UIStation(lobbyStatus);
 
-            Cinema = new Cinema();
             CreateCheckouts();
             PopulateQueue();
             Cinema.OpenCheckouts();
@@ -145,13 +144,6 @@ namespace Bioscoop_Simulatie
         {
             Thread thread = new Thread(Cinema.HandleCheckouts);
             thread.Start();
-            //Cinema.HandleCheckouts();
-        }
-
-        public void HandleTheFuckingThingOnTheFuckingChange()
-        {
-            RoomStatus status = Cinema.Rooms[0].Status;
-            UIRooms[0].SetStatus(status);
         }
 	}
 }
