@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Shapes;
 
@@ -17,7 +14,7 @@ namespace Bioscoop_Simulatie
         /// <param name="title"></param>
         /// <param name="screen"></param>
         /// <param name="status"></param>
-        /// <param name="seats"></param
+        /// <param name="seats"></param>
 
         private TextBlock Title;
         private Rectangle Screen;
@@ -84,7 +81,5 @@ namespace Bioscoop_Simulatie
         {
             this.Title.Text = title;
         }
-
-
     }
 }
