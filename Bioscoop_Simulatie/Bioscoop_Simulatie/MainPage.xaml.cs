@@ -1,24 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Shapes;
-using static Bioscoop_Simulatie.MainPage;
 
 namespace Bioscoop_Simulatie
 {
@@ -68,10 +52,15 @@ namespace Bioscoop_Simulatie
             //Set Lobby
             Lobby = new UIStation(lobbyStatus);
 
-            Cinema = new Cinema();
             CreateCheckouts();
             PopulateQueue();
             Cinema.OpenCheckouts();
+
+            //  Thread thread = new Thread(() => 
+            // {
+			//	Cinema.UnnamedWhileLoop();
+			//});
+            //thread.Start();
         }
 
         /// <summary>
