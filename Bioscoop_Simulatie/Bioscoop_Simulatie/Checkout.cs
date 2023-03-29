@@ -39,14 +39,12 @@ namespace Bioscoop_Simulatie
         {
             Status = CheckoutStatus.Open;
             OnPropertyChanged("Status");
-            //update UI with new status
         }
 
         public void CheckoutInProgress()
         {
             Status = CheckoutStatus.InProgress;
             OnPropertyChanged("Status");
-            //update UI with new status
         }
 
         public void CheckoutFinished()
@@ -58,7 +56,6 @@ namespace Bioscoop_Simulatie
         {
             Status = CheckoutStatus.Closed;
             OnPropertyChanged("Status");
-            //update UI with new status
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

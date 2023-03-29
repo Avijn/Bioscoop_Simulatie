@@ -134,13 +134,6 @@ namespace Bioscoop_Simulatie
         {
             Thread thread = new Thread(Cinema.HandleCheckouts);
             thread.Start();
-            //Cinema.HandleCheckouts();
-        }
-
-        public void HandleTheFuckingThingOnTheFuckingChange()
-        {
-            RoomStatus status = Cinema.Rooms[0].Status;
-            UIRooms[0].SetStatus(status);
         }
 	}
 }
