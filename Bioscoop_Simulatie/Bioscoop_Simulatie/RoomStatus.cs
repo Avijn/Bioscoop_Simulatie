@@ -1,6 +1,6 @@
 ﻿namespace Bioscoop_Simulatie
 {
-	enum RoomStatus
+	public enum RoomStatus
 	{
 		Open,
 		ReadyToPlay,
