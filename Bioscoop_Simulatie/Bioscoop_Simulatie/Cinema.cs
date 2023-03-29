@@ -237,7 +237,7 @@ namespace Bioscoop_Simulatie
             }
         }
 
-		public void RunRooms()
+		public async void RunRooms()
         {
             foreach (Room room in Rooms)
             {
@@ -245,21 +245,44 @@ namespace Bioscoop_Simulatie
                 {
                     case RoomStatus.Open:
 						room.Status = RoomStatus.ReadyToPlay;
-                        //Todo Insert logic to add people to room here
+			
+						//Todo Insert logic to add people to room here
 						break;
+
                     case RoomStatus.ReadyToPlay:
 						room.Status = RoomStatus.Playing;
-						PlayRoom(room);
+                        room.Img = room.Playing;
+						Debug.WriteLine($"{room.Name} started : {room.Status}");
+						await ExecuteOnUIThread(() =>
+                        {
+                            room.OnPropertyChanged("Img");
+                        });
+                        PlayRoom(room);
 						break;
+
                     case RoomStatus.FinishedPlaying:
 						//Todo Throw out the people in the room
 						room.Status = RoomStatus.Cleaning;
-						CleanRoom(room);
+                        Debug.WriteLine($"{room.Name} started : {room.Status}");
+                        room.Img = room.Cleaning;
+                        
+						await ExecuteOnUIThread(() =>
+                        {
+                            room.OnPropertyChanged("Img");
+                        });
+                        CleanRoom(room);
 						break;
+
                     case RoomStatus.FinishedCleaning:
                         //Insert logic to change movies etc.
 						room.Status = RoomStatus.Open;
-						break;
+						Debug.WriteLine($"{room.Name} started : {room.Status}");
+                        room.Img = room.Waiting;
+						await ExecuteOnUIThread(() =>
+                        {
+                            room.OnPropertyChanged("Img");
+                        });
+                        break;
                 }
 			}
 		}

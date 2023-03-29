@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -146,5 +147,11 @@ namespace Bioscoop_Simulatie
             thread.Start();
             //Cinema.HandleCheckouts();
         }
-    }
+
+        public void HandleTheFuckingThingOnTheFuckingChange()
+        {
+            RoomStatus status = Cinema.Rooms[0].Status;
+            UIRooms[0].SetStatus(status);
+        }
+	}
 }
