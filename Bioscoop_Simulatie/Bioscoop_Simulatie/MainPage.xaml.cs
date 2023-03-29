@@ -67,9 +67,9 @@ namespace Bioscoop_Simulatie
             //Set Lobby
             Lobby = new UIStation(lobbyStatus);
 
-            Cinema.Checkouts.Add(new Checkout());
-            Cinema.AddCustomerToQueue(new Customer(25));
-            Cinema.AddCustomerToQueue(new Customer(25));
+            Cinema = new Cinema();
+            CreateCheckouts();
+            PopulateQueue();
             Cinema.OpenCheckouts();
         }
 
@@ -114,21 +114,37 @@ namespace Bioscoop_Simulatie
         {
             Cinema.Rooms = Rooms;
         }
+        private void CreateCheckouts()
+        {
+            Cinema.Checkouts.Add(new Checkout());
+            Cinema.Checkouts.Add(new Checkout());
+        }
 
-		/// <summary>
-		/// Gets the room by given nr
-		/// </summary>
-		/// <param name="nr"></param>
-		/// <returns></returns>
-		private UIRoom GetRoomByNr(int nr)
+        private void PopulateQueue()
+        {
+            Random random = new Random();
+
+            for (int i = 0; i < 50; i++)
+            {
+                Cinema.AddCustomerToQueue(new Customer(random.Next(3, 100)));
+            }
+        }
+
+        /// <summary>
+        /// Gets the room by given nr
+        /// </summary>
+        /// <param name="nr"></param>
+        /// <returns></returns>
+        private UIRoom GetRoomByNr(int nr)
         {
             return UIRooms[nr - 1];
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //Thread thread = new Thread(Cinema.HandleCheckouts);
-            Cinema.HandleCheckouts();
+            Thread thread = new Thread(Cinema.HandleCheckouts);
+            thread.Start();
+            //Cinema.HandleCheckouts();
         }
     }
 }
