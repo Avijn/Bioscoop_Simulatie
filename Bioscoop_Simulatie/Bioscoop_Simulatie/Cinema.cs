@@ -28,15 +28,15 @@ namespace Bioscoop_Simulatie
             Rooms = new List<Room>();
             SoldTickets = new Dictionary<Movie, int>();
 
-            // For "Testing" purposes
-            Rooms.Add(new Room("Room 1", 15, 5000));
-            Rooms.Add(new Room("Room 2", 15, 6000));
-            Rooms.Add(new Room("Room 3", 45, 3000));
+            //// For "Testing" purposes
+            //Rooms.Add(new Room("Room 1", 15, 5000));
+            //Rooms.Add(new Room("Room 2", 15, 6000));
+            //Rooms.Add(new Room("Room 3", 45, 3000));
 
-            // For ""Testing"" purposes
-            Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
-            Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
-            Rooms[2].Movie = new Movie("The lord of the rings: fellowship of the ring", 15000, 16);
+            //// For ""Testing"" purposes
+            //Rooms[0].Movie = new Movie("Shrek 4", 12000, 13);
+            //Rooms[1].Movie = new Movie("Shrek 5", 10000, 21);
+            //Rooms[2].Movie = new Movie("The lord of the rings: fellowship of the ring", 15000, 16);
 
             // For """Testing""" purposes
             RunRoomsFlag = false;
