@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Data.Json;
+using Windows.Foundation;
+using Windows.System;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace Bioscoop_Simulatie
 {
@@ -19,6 +23,7 @@ namespace Bioscoop_Simulatie
         public List<Room> Rooms { get; set; }
         public Dictionary<Movie, int> SoldTickets { get; set; }
         public bool RunRoomsFlag { get; set; }
+        public bool RunCheckoutsFlag { get; set; }
 
         public Cinema()
         {
@@ -40,6 +45,7 @@ namespace Bioscoop_Simulatie
 
             // For """Testing""" purposes
             RunRoomsFlag = false;
+            RunCheckoutsFlag = false;
         }
 
         //public event PropertyChangedEventHandler PropertyChanged;
@@ -53,27 +59,50 @@ namespace Bioscoop_Simulatie
             }
         }
 
-        public void HandleCheckouts()
+        public async void HandleCheckouts()
         {
-            while (Queue.Count >= 0)
+            while (Queue.Count > 0 || RunCheckoutsFlag)
             {
                 foreach (var checkout in Checkouts)
                 {
                     if (checkout.Status == CheckoutStatus.Open && Queue.Count != 0)
                     {
-                        Debug.WriteLine("inside if checkout open");
-                        checkout.CheckoutInProgress();
+                        RunCheckoutsFlag = true;
+                        await ExecuteOnUIThread(() =>
+                        {
+                            checkout.CheckoutInProgress();
+                        });
+
                         ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
                         continue;
                     }
 
                     if (checkout.Status == CheckoutStatus.Finished)
                     {
-                        Debug.WriteLine("inside if checkout finished");
-                        checkout.CheckoutOpen();
+                        await ExecuteOnUIThread(() =>
+                        {
+                            checkout.CheckoutOpen();
+                        });
+
+                        if (!CheckoutsInProgress())
+                        {
+                            RunCheckoutsFlag = false;
+                        }
                     }
                 }
             }
+        }
+
+        private bool CheckoutsInProgress()
+        {
+            List<bool> bools = new List<bool>();
+
+            foreach (var checkout in Checkouts)
+            {
+                bools.Add(checkout.Status == CheckoutStatus.InProgress);
+            }
+
+            return bools.Contains(true);
         }
 
         /// <summary>
@@ -105,11 +134,10 @@ namespace Bioscoop_Simulatie
         private void SellToCustomer(Checkout checkout)
         {
             Customer customer = GetNextCustomer();
-            if (customer == null)
+            if (customer == null || Rooms.Count == 0)
                 return;
 
-            int max = Rooms.Count == 0 ? 1 : Rooms.Count;
-            Room room = Rooms[customer.PickRandomMovie(max)];
+            Room room = Rooms[customer.PickRandomMovie(Rooms.Count)];
             Ticket ticket = checkout.SellTicket(room, customer);
             if (ticket == null)
                 return;
@@ -235,5 +263,10 @@ namespace Bioscoop_Simulatie
                 }
 			}
 		}
+
+        private IAsyncAction ExecuteOnUIThread(DispatchedHandler action)
+        {
+            return Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, action);
+        }
     }
 }

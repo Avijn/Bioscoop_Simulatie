@@ -49,7 +49,7 @@ namespace Bioscoop_Simulatie
             //update UI with new status
         }
 
-        public void CheckoutFinished() 
+        public void CheckoutFinished()
         {
             Status = CheckoutStatus.Finished;
         }
