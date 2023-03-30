@@ -10,6 +10,7 @@ namespace Bioscoop_Simulatie
     {
         Open,
         InProgress,
+        Finished,
         Closed
     }
 }

@@ -1,9 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Bioscoop_Simulatie
 {
-    class Room
+    public class Room : INotifyPropertyChanged
     {
         public string Name { get; set; }
         public Movie Movie { get; set; }
@@ -12,14 +17,26 @@ namespace Bioscoop_Simulatie
         public int TakenSeats { get; set; }
         public int CleanDuration { get; set; }
         public Thread Thread { get; set; }
+        public BitmapImage Img { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public Room(string name, int seats, int cleanDuration)
-        {
-            Name = name;
+        public BitmapImage Waiting { get; set; }
+		public BitmapImage Playing { get; set; }
+		public BitmapImage Cleaning { get; set; }
+
+
+		public Room(string name, int seats, int cleanDuration)
+		{
+			Waiting = CreateBitMapImage(@"status_waiting.png");
+			Playing = CreateBitMapImage(@"status_playing.png");
+			Cleaning = CreateBitMapImage(@"status_cleaning.png");
+
+			Name = name;
             Seats = seats;
             Status = RoomStatus.Open;
             CleanDuration = cleanDuration;
-        }
+			Img = Waiting;
+		}
 
         public BitmapImage GetSeatImage(int seatNr)
         {
@@ -55,9 +72,7 @@ namespace Bioscoop_Simulatie
         public void Play()
         {
             TakenSeats = 0;
-            Debug.WriteLine("Start playing movie");
             Thread.Sleep(Movie.Duration);
-			Debug.WriteLine("Finished playing movie");
             Status = RoomStatus.FinishedPlaying;
 		}
 
@@ -65,10 +80,8 @@ namespace Bioscoop_Simulatie
         /// Starts cleaning the room, waits the given duration for cleaning
         /// </summary>
         public void Clean()
-        {
-			Debug.WriteLine("Start cleaning room");
+		{
 			Thread.Sleep(CleanDuration);
-			Debug.WriteLine("Finished cleaning room");
             Status = RoomStatus.FinishedCleaning;
 		}
 
@@ -77,8 +90,23 @@ namespace Bioscoop_Simulatie
         /// </summary>
         public void Open()
         {
-            Status = RoomStatus.Open;
+			Status = RoomStatus.Open;
         }
 
-    }
+        public void Sleep(int amount)
+        {
+            Thread.Sleep(amount);
+        }
+
+        public BitmapImage CreateBitMapImage(string path)
+		{
+			string assetsFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets");
+			return new BitmapImage(new Uri(Path.Combine(assetsFolderPath, path)));
+		}
+
+		public void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
 }

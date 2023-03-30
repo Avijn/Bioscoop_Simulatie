@@ -7,6 +7,8 @@
 		Playing,
 		FinishedPlaying,
 		Cleaning,
-		FinishedCleaning
+		FinishedCleaning,
+		WaitingToOpen,
+		SeatCustomers
 	}
 }
