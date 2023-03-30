@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Bioscoop_Simulatie
@@ -15,10 +12,6 @@ namespace Bioscoop_Simulatie
         public UIStation Lobby { get; set; }
         public Cinema Cinema { get; set; }
 
-
-		public List<Room> Rooms { get; set; }
-		public List<Movie> Movies { get; set; }
-
         public MainPage()
         {
             this.InitializeComponent();
@@ -26,17 +19,9 @@ namespace Bioscoop_Simulatie
             //Creates Cinema
             Cinema = new Cinema();
 
-			//Create movies
-            Movies = new List<Movie>();
-			CreateMovies();
-
 			//Create cinema rooms
 			UIRooms = new UIRoom[3];
-            Rooms= new List<Room>();
             CreateRooms();
-
-            //Bind movies to rooms
-            BindMovieToRoom();
 
 			//Set cinema registers
 			Checkout_1 = new UICheckout(registerStatus_1); 
@@ -68,44 +53,34 @@ namespace Bioscoop_Simulatie
 			UIRooms[2] = room3;
 		}
 
-        private void CreateMovies()
-        {
-			Movies.Add(new Movie("Shrek 4", 12000, 13));
-			Movies.Add(new Movie("Shrek 5", 10000, 21));
-			Movies.Add(new Movie("The lord of the rings: fellowship of the ring", 15000, 16));
-		}
-
-        private void BindMovieToRoom()
-        {
-			Rooms[0].Movie = Movies[0];
-            Rooms[1].Movie = Movies[1];
-            Rooms[2].Movie = Movies[2];
-		}
-
-        /// <summary>
-        /// Gets the room by given nr
-        /// </summary>
-        /// <param name="nr"></param>
-        /// <returns></returns>
-        private UIRoom GetRoomByNr(int nr)
-        {
-            return UIRooms[nr - 1];
-        }
-
         private void Open_Close_Checkouts(object sender, RoutedEventArgs e)
         {
-            if (Cinema.Checkouts[0].Status == CheckoutStatus.Closed)
+            if (!Cinema.IsCheckoutsOpen)
             {
+                Cinema.IsCheckoutsOpen = true;
                 Cinema.OpenCheckouts();
                 return;
             }
 
+            Cinema.IsCheckoutsOpen = false;
             Cinema.CloseCheckouts();
         }
 
         private void Open_Close_Cinema(object sender, RoutedEventArgs e)
         {
-            
+            if (Cinema.RunCinemaFlag)
+            {
+                Cinema.RunCinemaFlag = false;
+                return;
+            }
+
+            Cinema.RunCinemaFlag = true;
+
+            if (Cinema.IsThreadRunning)
+                return;
+
+            Cinema.IsThreadRunning = true;
+            Cinema.Run.Start();
         }
     }
 }
