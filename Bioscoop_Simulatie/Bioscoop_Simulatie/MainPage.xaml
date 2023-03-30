@@ -118,7 +118,8 @@
 
             <!--Control Panel-->
             <Grid Grid.Column="0">
-                <Button Content="Button" Height="82" Margin="0,370,0,0" VerticalAlignment="Top" Width="144" HorizontalAlignment="Center" Click="Button_Click"/>
+                <Button Content="Open/Close Cinema" Height="82" Margin="0,203,0,0" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Cinema"/>
+                <Button Content="Open/Close Checkouts" Height="82" Margin="0,321,0,0" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Checkouts"/>
 
             </Grid>
 

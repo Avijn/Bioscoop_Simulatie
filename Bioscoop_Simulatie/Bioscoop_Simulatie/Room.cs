@@ -78,8 +78,13 @@ namespace Bioscoop_Simulatie
         /// Opens the room for customers
         /// </summary>
         public void Open()
-        {           
+        {
 			Status = RoomStatus.Open;
+        }
+
+        public void Sleep(int amount)
+        {
+            Thread.Sleep(amount);
         }
 
         public BitmapImage CreateBitMapImage(string path)
