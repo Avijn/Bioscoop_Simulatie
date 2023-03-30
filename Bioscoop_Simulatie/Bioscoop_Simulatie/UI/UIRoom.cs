@@ -51,13 +51,13 @@ namespace Bioscoop_Simulatie
 
                 Image seat = this.Seats[this.PeopleInRoom - 1];
                 Console.WriteLine(seat);
-                seat.Source = Utils.CreateImage("seat_taken.PNG");
+                //seat.Source = Utils.CreateImage("seat_taken.PNG");
             }
         }
 
         public void ClearRoom()
         {
-            this.Seats.ForEach(seat => seat.Source = Utils.CreateImage("seat_free.png"));
+            //this.Seats.ForEach(seat => seat.Source = Utils.CreateImage("seat_free.png"));
             this.PeopleInRoom = 0;
         }
 
@@ -65,15 +65,15 @@ namespace Bioscoop_Simulatie
         {
             if (status == RoomStatus.Playing)
             {
-                this.Status.Source = Utils.CreateImage("status_playing.PNG");
+                //this.Status.Source = Utils.CreateImage("status_playing.PNG");
             }
             else if (status == RoomStatus.Cleaning)
             {
-                this.Status.Source = Utils.CreateImage("status_cleaning.PNG");
+                //this.Status.Source = Utils.CreateImage("status_cleaning.PNG");
             }
             else
             {
-                this.Status.Source = Utils.CreateImage("status_waiting.PNG");
+                //this.Status.Source = Utils.CreateImage("status_waiting.PNG");
             }
         }
 

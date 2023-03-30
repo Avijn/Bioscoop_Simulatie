@@ -11,7 +11,7 @@ using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 
 namespace Bioscoop_Simulatie
 {
@@ -344,23 +344,73 @@ namespace Bioscoop_Simulatie
                         //Insert logic to change movies etc. (NOT MVP)
 
 
-                        Debug.WriteLine($"{room.Name} went to sleep");
-                        room.Sleep(1500);
-                        Debug.WriteLine($"{room.Name} woke up");
-                        room.Status = RoomStatus.Open;
-                        break;
+                foreach (var room in Rooms)
+                {
+                    room.Status = RoomStatus.Open;
                 }
-			}
-		}
+            }
+        }
+
+        private bool AllCustomersSeated()
+        {
+            List<bool> bools = new List<bool>();
+
+            foreach (var room in Rooms)
+            {
+                bools.Add(room.Status == RoomStatus.SeatCustomers);
+            }
+
+            return !bools.Contains(false);
+        }
+
+        private async Task<bool> AddCustomersToRoom(Room room)
+        {
+            for (int i = 0; i < Lobby.Count; i++)
+            {
+                Customer customer = Lobby[i];
+
+                if (room.Movie == customer.Ticket.Movie)
+                {
+                    Lobby.Remove(customer);
+                    await ExecuteOnUIThread(() => OnPropertyChanged("Lobby"));
+                    room.TakenSeats++;
+                    await ExecuteOnUIThread(() => room.OnPropertyChanged("GetSeatImage"));
+                    //update seats UI to add a single populated seat
+                }
+            }
+
+            room.Status = RoomStatus.ReadyToPlay;
+
+            return true;
+        }
+
+        private async void RemoveCustomersFromRoom(Room room)
+        {
+            room.TakenSeats = 0;
+            await ExecuteOnUIThread(() => room.OnPropertyChanged("GetSeatImage"));
+            //update seats UI to empty seats
+        }
 
         private IAsyncAction ExecuteOnUIThread(DispatchedHandler action)
         {
             return Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, action);
         }
 
-        private void OnPropertyChanged(string propertyName)
+        public SolidColorBrush GetCheckoutColor()
+        {
+            if(IsCheckoutsOpen)
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(255, 104, 184, 102));
+            } else
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(255, 253, 73, 73));
+            }
+        }
+
+        public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }
