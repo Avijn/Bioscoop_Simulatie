@@ -24,8 +24,7 @@ namespace Bioscoop_Simulatie
             this.InitializeComponent();
 
             //Creates Cinema
-			Cinema = new Cinema();
-			//DataContext = Cinema;
+            Cinema = new Cinema();
 
 			//Create movies
             Movies = new List<Movie>();
@@ -39,9 +38,6 @@ namespace Bioscoop_Simulatie
             //Bind movies to rooms
             BindMovieToRoom();
 
-            //Bind rooms to cinema
-            BindRoomToCinema();
-
 			//Set cinema registers
 			Checkout_1 = new UICheckout(registerStatus_1); 
             Checkout_2 = new UICheckout(registerStatus_2);
@@ -51,16 +47,6 @@ namespace Bioscoop_Simulatie
 
             //Set Lobby
             Lobby = new UIStation(lobbyStatus);
-
-            CreateCheckouts();
-            PopulateQueue();
-            Cinema.OpenCheckouts();
-
-            //  Thread thread = new Thread(() => 
-            // {
-			//	Cinema.UnnamedWhileLoop();
-			//});
-            //thread.Start();
         }
 
         /// <summary>
@@ -80,10 +66,6 @@ namespace Bioscoop_Simulatie
             //Create room 3
             UIRoom room3 = new UIRoom(movieTitle_3, movieScene_3, movieStatus_3, seats_room_3);
 			UIRooms[2] = room3;
-
-			Rooms.Add(new Room("Room 1", 15, 5000));
-			Rooms.Add(new Room("Room 2", 15, 6000));
-			Rooms.Add(new Room("Room 3", 45, 3000));
 		}
 
         private void CreateMovies()
@@ -100,26 +82,6 @@ namespace Bioscoop_Simulatie
             Rooms[2].Movie = Movies[2];
 		}
 
-        private void BindRoomToCinema()
-        {
-            Cinema.Rooms = Rooms;
-        }
-        private void CreateCheckouts()
-        {
-            Cinema.Checkouts.Add(new Checkout());
-            Cinema.Checkouts.Add(new Checkout());
-        }
-
-        private void PopulateQueue()
-        {
-            Random random = new Random();
-
-            for (int i = 0; i < 50; i++)
-            {
-                Cinema.AddCustomerToQueue(new Customer(random.Next(3, 100)));
-            }
-        }
-
         /// <summary>
         /// Gets the room by given nr
         /// </summary>
@@ -130,10 +92,20 @@ namespace Bioscoop_Simulatie
             return UIRooms[nr - 1];
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Open_Close_Checkouts(object sender, RoutedEventArgs e)
         {
-            Thread thread = new Thread(Cinema.HandleCheckouts);
-            thread.Start();
+            if (Cinema.Checkouts[0].Status == CheckoutStatus.Closed)
+            {
+                Cinema.OpenCheckouts();
+                return;
+            }
+
+            Cinema.CloseCheckouts();
         }
-	}
+
+        private void Open_Close_Cinema(object sender, RoutedEventArgs e)
+        {
+            
+        }
+    }
 }
