@@ -291,7 +291,12 @@ namespace Bioscoop_Simulatie
                     case RoomStatus.Open:
 						room.Status = RoomStatus.ReadyToPlay;
 						//Todo Insert logic to add people to room here
-						break;
+
+                        await ExecuteOnUIThread(() =>
+                        {
+                            room.OnPropertyChanged("GetSeatImage");
+                        });
+                        break;
                     case RoomStatus.ReadyToPlay:
 						room.Status = RoomStatus.Playing;
                         room.Img = room.Playing;
@@ -307,6 +312,17 @@ namespace Bioscoop_Simulatie
 						room.Status = RoomStatus.Cleaning;
                         Debug.WriteLine($"{room.Name} started : {room.Status}");
                         room.Img = room.Cleaning;
+                        //Todo Throw out the people in the room
+                        room.TakenSeats = 0;
+                        await ExecuteOnUIThread(() =>
+                        {
+                            room.OnPropertyChanged("GetSeatImage");
+                        });
+
+                        room.Status = RoomStatus.Cleaning;
+                        Debug.WriteLine($"{room.Name} started : {room.Status}");
+                        room.Img = room.Cleaning;
+                        
 						await ExecuteOnUIThread(() =>
                         {
                             room.OnPropertyChanged("Img");
