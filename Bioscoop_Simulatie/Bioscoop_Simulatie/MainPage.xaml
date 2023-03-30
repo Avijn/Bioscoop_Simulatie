@@ -8,6 +8,81 @@
     mc:Ignorable="d"
     RequestedTheme="Light"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style x:Key="ButtonStyle1" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource ButtonBackground}"/>
+            <Setter Property="BackgroundSizing" Value="OuterBorderEdge"/>
+            <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
+            <Setter Property="Padding" Value="{StaticResource ButtonPadding}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
+            <Setter Property="FocusVisualMargin" Value="-3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" Background="{TemplateBinding Background}" BackgroundSizing="{TemplateBinding BackgroundSizing}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" CornerRadius="{TemplateBinding CornerRadius}" Content="{TemplateBinding Content}" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPointerOver}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPointerOver}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPointerOver}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPressed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPressed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPressed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -119,9 +194,58 @@
 
             <!--Control Panel-->
             <Grid Grid.Column="0">
-                <Button Content="Open/Close Cinema" Height="82" Margin="0,203,0,0" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Cinema"/>
-                <Button Content="Open/Close Checkouts" Height="82" Margin="0,321,0,0" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Checkouts"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="65, 0, 65, 0" Background="LightGray" CornerRadius="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Padding="5, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Room is being cleaned" VerticalAlignment="Center"></TextBlock>
+                        <Image Grid.Column="1" Source="Assets/status_cleaning.png" Height="30" Width="30"></Image>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Padding="5, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Room is playing a movie"  VerticalAlignment="Center"></TextBlock>
+                        <Image Grid.Column="1" Source="Assets/status_playing.png" Height="30" Width="30"></Image>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Padding="5, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" TextWrapping="Wrap" Text="Room is waiting for movie to start"  VerticalAlignment="Center"></TextBlock>
+                        <Image Grid.Column="1" Source="Assets/status_waiting.png" Height="30" Width="30"></Image>
+                    </Grid>
+
+                </Grid>
+
+                <Grid Grid.Row="1" Padding="10, 10, 10, 10" RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Content="Open Cinema" Height="82" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Cinema" x:Name="CinemaControlBtn" Background="#68B866" Foreground="White" FontWeight="Bold"/>
+                    <Button Grid.Row="1" Content="Open Checkouts" Height="82" VerticalAlignment="Center" Width="170" HorizontalAlignment="Center" Click="Open_Close_Checkouts" x:Name="CheckoutControlBtn" Background="#68B866" Foreground="White" FontWeight="Bold"/>
+                </Grid>
             </Grid>
+            
 
             <!--Rest Of Cinema-->
             <Grid Grid.Column="1">
@@ -132,10 +256,12 @@
                 </Grid.RowDefinitions>
 
                 <!--Register 1-->
-                <Rectangle Grid.Row="0" Height="100" Width="200" Fill="LightGray"/>
                 <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Register 1" VerticalAlignment="Top" FontSize="20"/>
-                <!--Status-->
-                <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Checkouts[0].Status, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_1"/>
+                <Grid Grid.Row="0" Margin="300, 30, 300, 30" Background="LightGray">
+                    <!--Status-->
+                    <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Checkouts[0].Status, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_1"/>
+                </Grid>
+                
 
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -144,25 +270,38 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Queue-->
-                    <Rectangle Grid.Column="0" Height="100" Width="200" Fill="LightGray"/>
                     <TextBlock Grid.Column="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Queue" VerticalAlignment="Top" FontSize="20"/>
                     <!--Status-->
-                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="People waiting:" VerticalAlignment="Top" FontSize="20" x:Name="queueStatus" Margin="0,49,0,0"/>
-                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Queue.Count, Mode=OneWay}" VerticalAlignment="Top" FontSize="20" x:Name="queueStatusAmount" Margin="0,92,0,0"/>
+                    <Grid Grid.Column="0" Margin="100, 30, 100, 30" Background="LightGray">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="People waiting:" VerticalAlignment="Center" FontSize="20" x:Name="queueStatus"/>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Queue.Count, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="queueStatusAmount"/>
+                    </Grid>
+                    
 
                     <!--Lobby-->
-                    <Rectangle Grid.Column="1" Height="100" Width="200" Fill="LightGray"/>
                     <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Lobby" VerticalAlignment="Top" FontSize="20"/>
                     <!--People waiting-->
-                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="People waiting:" VerticalAlignment="Center" FontSize="20" x:Name="lobbyStatus"/>
-                    <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Lobby.Count, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="lobbyStatusAmount" Margin="300,0,0,0"/>
+                    <Grid Grid.Column="1" Margin="100, 30, 100, 30" Background="LightGray">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="People waiting:" VerticalAlignment="Center" FontSize="20" x:Name="lobbyStatus"/>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Lobby.Count, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="lobbyStatusAmount"/>
+                    </Grid>
+                    
                 </Grid>
 
                 <!--Register 2-->
-                <Rectangle Grid.Row="2" Height="100" Width="200" Fill="LightGray"/>
                 <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Register 2" VerticalAlignment="Top" FontSize="20"/>
-                <!--Status-->
-                <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Checkouts[1].Status, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_2"/>
+                <Grid Grid.Row="2" Margin="300, 30, 300, 30" Background="LightGray">
+                    <!--Status-->
+                    <TextBlock Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Path=Cinema.Checkouts[1].Status, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" x:Name="registerStatus_2"/>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

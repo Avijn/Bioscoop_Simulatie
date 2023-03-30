@@ -1,5 +1,9 @@
-﻿using Windows.UI.Xaml;
+
+﻿using System.Diagnostics;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
 namespace Bioscoop_Simulatie
 {
@@ -21,7 +25,7 @@ namespace Bioscoop_Simulatie
 
 			//Create cinema rooms
 			UIRooms = new UIRoom[3];
-            CreateRooms();
+      CreateRooms();
 
 			//Set cinema registers
 			Checkout_1 = new UICheckout(registerStatus_1); 
@@ -32,6 +36,10 @@ namespace Bioscoop_Simulatie
 
             //Set Lobby
             Lobby = new UIStation(lobbyStatus);
+
+
+            //Set hover on button to transparent
+            //CinemaControlBtn.PointerOverBackground = new SolidColorBrush();
         }
 
         /// <summary>
@@ -58,11 +66,13 @@ namespace Bioscoop_Simulatie
             if (!Cinema.IsCheckoutsOpen)
             {
                 Cinema.IsCheckoutsOpen = true;
+                UpdateCheckoutBtnUI(Cinema.IsCheckoutsOpen);
                 Cinema.OpenCheckouts();
                 return;
             }
 
             Cinema.IsCheckoutsOpen = false;
+            UpdateCheckoutBtnUI(Cinema.IsCheckoutsOpen);
             Cinema.CloseCheckouts();
         }
 
@@ -71,16 +81,60 @@ namespace Bioscoop_Simulatie
             if (Cinema.RunCinemaFlag)
             {
                 Cinema.RunCinemaFlag = false;
+                Debug.WriteLine("Cinema is not running");
+                Cinema.RunCinemaFlag = false;
+                UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
                 return;
             }
 
             Cinema.RunCinemaFlag = true;
+            UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
+            UpdateCheckoutBtnUI(Cinema.IsCheckoutsOpen);
 
             if (Cinema.IsThreadRunning)
                 return;
 
             Cinema.IsThreadRunning = true;
             Cinema.Run.Start();
+        }
+
+        private void UpdateCinemaBtnUI(bool closed)
+        {
+            Windows.UI.Color color;
+            string content;
+            if(closed)
+            {
+                color = Windows.UI.Color.FromArgb(255, 253, 73, 73);
+                content = "Close Cinema";
+            }
+            else
+            {
+                color = Windows.UI.Color.FromArgb(255, 104, 184, 102);
+                content = "Open Cinema";
+            }
+
+            CinemaControlBtn.Background = new SolidColorBrush(color);
+            CinemaControlBtn.Content = content;
+        }
+
+
+        private void UpdateCheckoutBtnUI(bool closed)
+        {
+            Windows.UI.Color color;
+            string content;
+            if (!closed)
+            {
+                color = Windows.UI.Color.FromArgb(255, 253, 73, 73);
+                content = "Close Checkouts";
+            }
+            else
+            {
+                color = Windows.UI.Color.FromArgb(255, 104, 184, 102);
+                content = "Open Checkouts";
+            }
+
+            CheckoutControlBtn.Background = new SolidColorBrush(color);
+            CheckoutControlBtn.Content = content;
         }
     }
 }

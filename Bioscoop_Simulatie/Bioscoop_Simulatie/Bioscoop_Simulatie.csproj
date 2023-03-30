@@ -126,11 +126,9 @@
     </Compile>
     <Compile Include="MovieStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterStatus.cs" />
     <Compile Include="UI\UICheckout.cs" />
     <Compile Include="UI\UIRoom.cs" />
     <Compile Include="UI\UIStation.cs" />
-    <Compile Include="Utils.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Core;
+using Windows.UI.Xaml.Media;
 
 namespace Bioscoop_Simulatie
 {
@@ -361,7 +362,8 @@ namespace Bioscoop_Simulatie
                 {
                     Lobby.Remove(customer);
                     await ExecuteOnUIThread(() => OnPropertyChanged("Lobby"));
-                    //update seats UI to add a single populated seat
+                    room.TakenSeats++;
+                    await ExecuteOnUIThread(() => room.OnPropertyChanged("GetSeatImage"));
                 }
             }
 
@@ -372,6 +374,8 @@ namespace Bioscoop_Simulatie
 
         private async void RemoveCustomersFromRoom(Room room)
         {
+            room.TakenSeats = 0;
+            await ExecuteOnUIThread(() => room.OnPropertyChanged("GetSeatImage"));
             //update seats UI to empty seats
         }
 
@@ -380,9 +384,21 @@ namespace Bioscoop_Simulatie
             return Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, action);
         }
 
-        private void OnPropertyChanged(string propertyName)
+        public SolidColorBrush GetCheckoutColor()
+        {
+            if(IsCheckoutsOpen)
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(255, 104, 184, 102));
+            } else
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(255, 253, 73, 73));
+            }
+        }
+
+        public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }
