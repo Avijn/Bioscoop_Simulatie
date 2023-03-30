@@ -36,6 +36,17 @@ namespace Bioscoop_Simulatie
 			Img = Waiting;
 		}
 
+        public BitmapImage GetSeatImage(int seatNr)
+        {
+            if(seatNr < TakenSeats)
+            {
+                return CreateBitMapImage(@"seat_taken.png");
+            } else
+            {
+                return CreateBitMapImage(@"seat_free.png");
+            }
+        }
+
         /// <summary>
         /// Adds a customer to the Room, this adds a takenseat unless the Takenseats equal the total amount of seats
         /// </summary>

@@ -39,15 +39,15 @@
                 <Image Grid.Row="2" HorizontalAlignment="Right" Margin="0, 0, 10, 0" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" x:Name="movieStatus_1" Source="{x:Bind Path=Cinema.Rooms[0].Img, Mode=OneWay}"/>
                 <!--Seats-->
                 <Grid x:Name="seats_room_1" Grid.Row="3">
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(1), Mode=OneWay}" />
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(2), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(3), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(4), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(5), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(6), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(7), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(8), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[0].GetSeatImage(9), Mode=OneWay}"/>
                 </Grid>
             </Grid>
 
@@ -68,15 +68,15 @@
                 <Image Grid.Row="2" HorizontalAlignment="Right" Margin="0, 0, 10, 0" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" x:Name="movieStatus_2" Source="{x:Bind Path=Cinema.Rooms[1].Img, Mode=OneWay}"/>
                 <!--Seats-->
                 <Grid x:Name="seats_room_2" Grid.Row="3">
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(1), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(2), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(3), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(4), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(5), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(6), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(7), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(8), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[1].GetSeatImage(9), Mode=OneWay}"/>
                 </Grid>
             </Grid>
 
@@ -97,15 +97,15 @@
                 <Image Grid.Row="2" HorizontalAlignment="Right" Margin="0, 0, 10, 0" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" x:Name="movieStatus_3" Source="{x:Bind Path=Cinema.Rooms[2].Img, Mode=OneWay}"/>
                 <!--Seats-->
                 <Grid x:Name="seats_room_3" Grid.Row="3">
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
-                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="Assets\seat_free.PNG"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="0,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(1), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(2), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(3), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="160,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(4), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="80,50,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(5), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(6), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(7), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-40,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(8), Mode=OneWay}"/>
+                    <Image Grid.Row="3" HorizontalAlignment="Center" Height="30" Margin="-120,10,0,0" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.5,0.5" Source="{x:Bind Path=Cinema.Rooms[2].GetSeatImage(9), Mode=OneWay}"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -121,7 +121,6 @@
             <Grid Grid.Column="0">
                 <Button Content="Open/Close Cinema" Height="82" Margin="0,203,0,0" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Cinema"/>
                 <Button Content="Open/Close Checkouts" Height="82" Margin="0,321,0,0" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Checkouts"/>
-
             </Grid>
 
             <!--Rest Of Cinema-->
