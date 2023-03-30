@@ -1,15 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.Foundation;
-using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media;
 
@@ -24,6 +19,9 @@ namespace Bioscoop_Simulatie
         public Dictionary<Movie, int> SoldTickets { get; set; }
         public bool RunRoomsFlag { get; set; }
         public bool RunCheckoutsFlag { get; set; }
+        public bool IsCheckoutsOpen { get; set; }
+        public bool IsThreadRunning { get; set; }
+        public Thread Run { get; }
         public bool RunCinemaFlag { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -34,32 +32,47 @@ namespace Bioscoop_Simulatie
             Lobby = new List<Customer>();
             Rooms = new List<Room>();
             SoldTickets = new Dictionary<Movie, int>();
+            Run = new Thread(RunCinema);
 
             RunRoomsFlag = false;
             RunCheckoutsFlag = false;
             RunCinemaFlag = false;
+            IsCheckoutsOpen = false;
+            IsThreadRunning = false;
 
             PopulateCinema();
         }
 
         private void PopulateCinema()
         {
-            PopulateQueue();
             AddRegisters();
             PopulateRooms();
+            //PopulateQueue();
         }
 
-        public void PopulateQueue()
+        private void PopulateQueue()
         {
-            if (Queue.Count > 0)
+            if (Lobby.Count >= TotalAmountOfSeats() || Queue.Count > 0)
                 return;
 
             Random random = new Random();
 
-            for (int i = 0; i < 50; i++)
+            for (int i = Queue.Count; i < 50; i++)
             {
                 AddCustomerToQueue(new Customer(random.Next(3, 100)));
             }
+        }
+
+        private int TotalAmountOfSeats()
+        {
+            int total = 0;
+
+            foreach (var room in Rooms)
+            {
+                total += room.Seats;
+            }
+
+            return total;
         }
 
         private void AddRegisters()
@@ -70,18 +83,34 @@ namespace Bioscoop_Simulatie
 
         private void PopulateRooms()
         {
-            Rooms.Add(new Room("Room 1", 15, 5000) { Movie = new Movie("Shrek 4", 12000, 13) });
-            Rooms.Add(new Room("Room 2", 15, 6000) { Movie = new Movie("Shrek 5", 10000, 21) });
-            Rooms.Add(new Room("Room 3", 45, 3000) { Movie = new Movie("LOTR: Fellowship of the Ring", 15000, 16) });
+            Rooms.Add(new Room("Room 1", 9, 5000) { Movie = new Movie("Shrek 4", 12000, 13) });
+            Rooms.Add(new Room("Room 2", 9, 6000) { Movie = new Movie("Shrek 5", 10000, 21) });
+            Rooms.Add(new Room("Room 3", 9, 3000) { Movie = new Movie("LOTR: Fellowship of the Ring", 15000, 16) });
         }
 
         public void RunCinema()
         {
-            if (RunCinemaFlag)
+            while (RunCinemaFlag)
             {
-                OpenCheckouts();
+                RunRoomsFlag = true;
+
+                if (!IsCheckoutsOpen)
+                {
+                    OpenCheckouts();
+                    IsCheckoutsOpen = true;
+                }
+
                 PopulateQueue();
-                RunRooms();
+
+                while ((Queue.Count > 0 || RunCheckoutsFlag) && (Lobby.Count < TotalAmountOfSeats()))
+                {
+                    HandleCheckouts();
+                }
+
+                while (RunRoomsFlag)
+                {
+                    RunRooms();
+                }
             }
         }
 
@@ -101,25 +130,21 @@ namespace Bioscoop_Simulatie
             }
         }
 
-        public async void HandleCheckouts()
+        private async void HandleCheckouts()
         {
-            while (Queue.Count > 0 || RunCheckoutsFlag)
+            foreach (var checkout in Checkouts)
             {
-                foreach (var checkout in Checkouts)
+                if (checkout.Status == CheckoutStatus.Open && Queue.Count > 0)
                 {
-                    if (checkout.Status == CheckoutStatus.Open && Queue.Count != 0)
-                    {
-                        RunCheckoutsFlag = true;
-                        await ExecuteOnUIThread(() => checkout.CheckoutInProgress());
+                    RunCheckoutsFlag = true;
+                    await ExecuteOnUIThread(() => checkout.CheckoutInProgress());
+                    ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
+                    continue;
+                }
 
-                        ThreadPool.QueueUserWorkItem(HandleSingleCheckout, checkout);
-                        continue;
-                    }
-
-                    if (!CheckoutsInProgress())
-                    {
-                        RunCheckoutsFlag = false;
-                    }
+                if (!CheckoutsInProgress())
+                {
+                    RunCheckoutsFlag = false;
                 }
             }
         }
@@ -155,11 +180,7 @@ namespace Bioscoop_Simulatie
                 Thread.Sleep(sleepTime);
             }
 
-            await ExecuteOnUIThread(() => 
-            {
-                checkout.CheckoutOpen();
-                Thread.Sleep(1000);
-            });
+            await ExecuteOnUIThread(() => checkout.CheckoutOpen());
         }
 
         /// <summary>
@@ -232,7 +253,7 @@ namespace Bioscoop_Simulatie
             }
         }
 
-        public async void AddCustomerToQueue(Customer customer)
+        private async void AddCustomerToQueue(Customer customer)
         {
             lock(Queue)
             {
@@ -242,13 +263,7 @@ namespace Bioscoop_Simulatie
             await ExecuteOnUIThread(() => OnPropertyChanged("Queue"));
         }
 
-        public void ChangeMovieInRoom(Room room, Movie movie)
-        {
-            room.Movie = movie;
-
-        }
-
-        public void PlayRoom(Room room) 
+        private void PlayRoom(Room room) 
         {
             room.Thread = new Thread(room.Play);
             room.Thread.Start();
@@ -260,7 +275,7 @@ namespace Bioscoop_Simulatie
 			//thread.Start();
 		}
 
-		public void CleanRoom(Room room)
+        private void CleanRoom(Room room)
         {
             room.Thread = new Thread(room.Clean);
             room.Thread.Start();
@@ -272,77 +287,51 @@ namespace Bioscoop_Simulatie
             //cleanRoom.Start();
         }
 
-        public void UnnamedWhileLoop()
-        {
-            RunRoomsFlag = !RunRoomsFlag;
-
-            while(RunRoomsFlag)//TODO Becomes open/close button or something
-			{
-				RunRooms();
-            }
-        }
-
-		public async void RunRooms()
+        private async void RunRooms()
         {
             foreach (Room room in Rooms)
             {
                 switch(room.Status)
                 {
                     case RoomStatus.Open:
-						room.Status = RoomStatus.ReadyToPlay;
-						//Todo Insert logic to add people to room here
-
-                        await ExecuteOnUIThread(() =>
-                        {
-                            room.OnPropertyChanged("GetSeatImage");
-                        });
+                        room.Status = RoomStatus.SeatingCustomers;
+                        await AddCustomersToRoom(room);
                         break;
+
                     case RoomStatus.ReadyToPlay:
 						room.Status = RoomStatus.Playing;
                         room.Img = room.Playing;
-						Debug.WriteLine($"{room.Name} started : {room.Status}");
-						await ExecuteOnUIThread(() =>
-                        {
-                            room.OnPropertyChanged("Img");
-                        });
+						await ExecuteOnUIThread(() => room.OnPropertyChanged("Img"));
                         PlayRoom(room);
 						break;
+
                     case RoomStatus.FinishedPlaying:
-						//Todo Throw out the people in the room
+                        RemoveCustomersFromRoom(room);
 						room.Status = RoomStatus.Cleaning;
-                        Debug.WriteLine($"{room.Name} started : {room.Status}");
                         room.Img = room.Cleaning;
-
-                        //Todo Throw out the people in the room
-                        room.TakenSeats = 0;
-                        await ExecuteOnUIThread(() =>
-                        {
-                            room.OnPropertyChanged("GetSeatImage");
-                        });
-
-                        room.Status = RoomStatus.Cleaning;
-                        Debug.WriteLine($"{room.Name} started : {room.Status}");
-                        room.Img = room.Cleaning;
-                        
-						await ExecuteOnUIThread(() =>
-                        {
-                            room.OnPropertyChanged("Img");
-                        });
+						await ExecuteOnUIThread(() => room.OnPropertyChanged("Img"));
                         CleanRoom(room);
 						break;
+
                     case RoomStatus.FinishedCleaning:
                         room.Status = RoomStatus.WaitingToOpen;
-						Debug.WriteLine($"{room.Name} started : {room.Status}");
                         room.Img = room.Waiting;
-						await ExecuteOnUIThread(() =>
-                        {
-                            room.OnPropertyChanged("Img");
-                        });
+						await ExecuteOnUIThread(() => room.OnPropertyChanged("Img"));
                         break;
+
                     case RoomStatus.WaitingToOpen:
                         room.Status = RoomStatus.SeatCustomers;
-                        //Insert logic to change movies etc. (NOT MVP)
+                        room.Sleep(1500);
+                        break;
 
+                    default:
+                        break;
+                }
+			}
+
+            if (AllCustomersSeated())
+            {
+                RunRoomsFlag = false;
 
                 foreach (var room in Rooms)
                 {
@@ -375,7 +364,6 @@ namespace Bioscoop_Simulatie
                     await ExecuteOnUIThread(() => OnPropertyChanged("Lobby"));
                     room.TakenSeats++;
                     await ExecuteOnUIThread(() => room.OnPropertyChanged("GetSeatImage"));
-                    //update seats UI to add a single populated seat
                 }
             }
 

@@ -9,6 +9,7 @@
 		Cleaning,
 		FinishedCleaning,
 		WaitingToOpen,
-		SeatCustomers
+		SeatCustomers,
+		SeatingCustomers
 	}
 }

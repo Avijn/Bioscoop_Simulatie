@@ -1,3 +1,4 @@
+
 ﻿using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -15,10 +16,6 @@ namespace Bioscoop_Simulatie
         public UIStation Lobby { get; set; }
         public Cinema Cinema { get; set; }
 
-
-		public List<Room> Rooms { get; set; }
-		public List<Movie> Movies { get; set; }
-
         public MainPage()
         {
             this.InitializeComponent();
@@ -26,22 +23,9 @@ namespace Bioscoop_Simulatie
             //Creates Cinema
             Cinema = new Cinema();
 
-			//Create movies
-            Movies = new List<Movie>();
-			CreateMovies();
-
 			//Create cinema rooms
 			UIRooms = new UIRoom[3];
-            Rooms= new List<Room>();
-
-            Rooms.Add(new Room("Room 1", 15, 5000));
-            Rooms.Add(new Room("Room 2", 15, 6000));
-            Rooms.Add(new Room("Room 3", 45, 3000));
-
-            CreateRooms();
-
-            //Bind movies to rooms
-            BindMovieToRoom();
+      CreateRooms();
 
 			//Set cinema registers
 			Checkout_1 = new UICheckout(registerStatus_1); 
@@ -77,33 +61,9 @@ namespace Bioscoop_Simulatie
 			UIRooms[2] = room3;
 		}
 
-        private void CreateMovies()
-        {
-			Movies.Add(new Movie("Shrek 4", 12000, 13));
-			Movies.Add(new Movie("Shrek 5", 10000, 21));
-			Movies.Add(new Movie("The lord of the rings: fellowship of the ring", 15000, 16));
-		}
-
-        private void BindMovieToRoom()
-        {
-			Rooms[0].Movie = Movies[0];
-            Rooms[1].Movie = Movies[1];
-            Rooms[2].Movie = Movies[2];
-		}
-
-        /// <summary>
-        /// Gets the room by given nr
-        /// </summary>
-        /// <param name="nr"></param>
-        /// <returns></returns>
-        private UIRoom GetRoomByNr(int nr)
-        {
-            return UIRooms[nr - 1];
-        }
-
         private void Open_Close_Checkouts(object sender, RoutedEventArgs e)
         {
-            if (Cinema.Checkouts[0].Status == CheckoutStatus.Closed)
+            if (!Cinema.IsCheckoutsOpen)
             {
                 Cinema.IsCheckoutsOpen = true;
                 UpdateCheckoutBtnUI(Cinema.IsCheckoutsOpen);
@@ -120,10 +80,10 @@ namespace Bioscoop_Simulatie
         {
             if (Cinema.RunCinemaFlag)
             {
+                Cinema.RunCinemaFlag = false;
                 Debug.WriteLine("Cinema is not running");
                 Cinema.RunCinemaFlag = false;
                 UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
-
                 return;
             }
 
