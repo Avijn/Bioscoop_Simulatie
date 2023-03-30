@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Threading;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace Bioscoop_Simulatie
 {
@@ -33,6 +37,11 @@ namespace Bioscoop_Simulatie
 			//Create cinema rooms
 			UIRooms = new UIRoom[3];
             Rooms= new List<Room>();
+
+            Rooms.Add(new Room("Room 1", 15, 5000));
+            Rooms.Add(new Room("Room 2", 15, 6000));
+            Rooms.Add(new Room("Room 3", 45, 3000));
+
             CreateRooms();
 
             //Bind movies to rooms
@@ -105,7 +114,10 @@ namespace Bioscoop_Simulatie
 
         private void Open_Close_Cinema(object sender, RoutedEventArgs e)
         {
-            
+           if(Cinema.RunCinemaFlag)
+           {
+                Cinema.RunCinema();
+           }
         }
     }
 }

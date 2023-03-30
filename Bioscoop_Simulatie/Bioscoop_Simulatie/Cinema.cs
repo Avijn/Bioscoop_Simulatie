@@ -312,6 +312,7 @@ namespace Bioscoop_Simulatie
 						room.Status = RoomStatus.Cleaning;
                         Debug.WriteLine($"{room.Name} started : {room.Status}");
                         room.Img = room.Cleaning;
+
                         //Todo Throw out the people in the room
                         room.TakenSeats = 0;
                         await ExecuteOnUIThread(() =>
@@ -341,6 +342,8 @@ namespace Bioscoop_Simulatie
                     case RoomStatus.WaitingToOpen:
                         room.Status = RoomStatus.SeatCustomers;
                         //Insert logic to change movies etc. (NOT MVP)
+
+
                         Debug.WriteLine($"{room.Name} went to sleep");
                         room.Sleep(1500);
                         Debug.WriteLine($"{room.Name} woke up");
