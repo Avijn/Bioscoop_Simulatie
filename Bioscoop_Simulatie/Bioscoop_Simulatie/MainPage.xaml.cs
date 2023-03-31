@@ -1,30 +1,100 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+
+﻿using System.Diagnostics;
+using System.Threading;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Bioscoop_Simulatie
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
+        public UIRoom[] UIRooms { get; set; }
+        public UICheckout Checkout_1 { get; set; }
+        public UICheckout Checkout_2 { get; set; }
+        public UIStation Queue { get; set; }
+        public UIStation Lobby { get; set; }
+        public Cinema Cinema { get; set; }
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            //Creates Cinema
+            Cinema = new Cinema();
+
+			//Create cinema rooms
+			UIRooms = new UIRoom[3];
+            CreateRooms();
+
+			//Set cinema registers
+			Checkout_1 = new UICheckout(registerStatus_1); 
+            Checkout_2 = new UICheckout(registerStatus_2);
+
+            //Set Queue
+            Queue = new UIStation(queueStatus);
+
+            //Set Lobby
+            Lobby = new UIStation(lobbyStatus);
+        }
+
+        /// <summary>
+        /// Creates all the room classes in the cinema
+        /// All room classes hold the UI components for the room
+        /// </summary>
+        private void CreateRooms()
+        {
+            //Create room 1
+            UIRoom room1 = new UIRoom(movieTitle_1, movieScene_1, movieStatus_1, seats_room_1);
+			UIRooms[0] = room1;
+
+            //Create room 2
+            UIRoom room2 = new UIRoom(movieTitle_2, movieScene_2, movieStatus_2, seats_room_2);
+			UIRooms[1] = room2;
+
+            //Create room 3
+            UIRoom room3 = new UIRoom(movieTitle_3, movieScene_3, movieStatus_3, seats_room_3);
+			UIRooms[2] = room3;
+		}
+
+        private void Open_Close_Cinema(object sender, RoutedEventArgs e)
+        {
+            if (Cinema.RunCinemaFlag)
+            {
+                Cinema.RunCinemaFlag = false;
+                UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
+                return;
+            }
+
+            Cinema.RunCinemaFlag = true;
+            UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
+
+            if (!Cinema.Run.IsAlive)
+            {
+                Cinema.Run = new Thread(Cinema.RunCinema);
+                Cinema.Run.Start();
+            }
+        }
+
+        private void UpdateCinemaBtnUI(bool closed)
+        {
+            Windows.UI.Color color;
+            string content;
+
+            if(closed)
+            {
+                color = Windows.UI.Color.FromArgb(255, 253, 73, 73);
+                content = "Close Cinema";
+            }
+            else
+            {
+                color = Windows.UI.Color.FromArgb(255, 104, 184, 102);
+                content = "Open Cinema";
+            }
+
+            CinemaControlBtn.Background = new SolidColorBrush(color);
+            CinemaControlBtn.Content = content;
         }
     }
 }
