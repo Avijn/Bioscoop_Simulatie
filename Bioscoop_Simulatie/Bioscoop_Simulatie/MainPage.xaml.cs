@@ -61,27 +61,10 @@ namespace Bioscoop_Simulatie
 			UIRooms[2] = room3;
 		}
 
-        private void Open_Close_Checkouts(object sender, RoutedEventArgs e)
-        {
-            if (!Cinema.IsCheckoutsOpen)
-            {
-                Cinema.IsCheckoutsOpen = true;
-                UpdateCheckoutBtnUI(Cinema.IsCheckoutsOpen);
-                Cinema.OpenCheckouts();
-                return;
-            }
-
-            Cinema.IsCheckoutsOpen = false;
-            UpdateCheckoutBtnUI(Cinema.IsCheckoutsOpen);
-            Cinema.CloseCheckouts();
-        }
-
         private void Open_Close_Cinema(object sender, RoutedEventArgs e)
         {
             if (Cinema.RunCinemaFlag)
             {
-                Cinema.RunCinemaFlag = false;
-                Debug.WriteLine("Cinema is not running");
                 Cinema.RunCinemaFlag = false;
                 UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
                 return;
@@ -89,7 +72,6 @@ namespace Bioscoop_Simulatie
 
             Cinema.RunCinemaFlag = true;
             UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
-            UpdateCheckoutBtnUI(Cinema.IsCheckoutsOpen);
 
             if (Cinema.IsThreadRunning)
                 return;
@@ -115,26 +97,6 @@ namespace Bioscoop_Simulatie
 
             CinemaControlBtn.Background = new SolidColorBrush(color);
             CinemaControlBtn.Content = content;
-        }
-
-
-        private void UpdateCheckoutBtnUI(bool closed)
-        {
-            Windows.UI.Color color;
-            string content;
-            if (!closed)
-            {
-                color = Windows.UI.Color.FromArgb(255, 253, 73, 73);
-                content = "Close Checkouts";
-            }
-            else
-            {
-                color = Windows.UI.Color.FromArgb(255, 104, 184, 102);
-                content = "Open Checkouts";
-            }
-
-            CheckoutControlBtn.Background = new SolidColorBrush(color);
-            CheckoutControlBtn.Content = content;
         }
     }
 }
