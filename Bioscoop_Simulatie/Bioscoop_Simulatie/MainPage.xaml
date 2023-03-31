@@ -242,7 +242,6 @@
                     </Grid.RowDefinitions>
 
                     <Button Grid.Row="0" Content="Open Cinema" Height="82" VerticalAlignment="Top" Width="170" HorizontalAlignment="Center" Click="Open_Close_Cinema" x:Name="CinemaControlBtn" Background="#68B866" Foreground="White" FontWeight="Bold"/>
-                    <Button Grid.Row="1" Content="Open Checkouts" Height="82" VerticalAlignment="Center" Width="170" HorizontalAlignment="Center" Click="Open_Close_Checkouts" x:Name="CheckoutControlBtn" Background="#68B866" Foreground="White" FontWeight="Bold"/>
                 </Grid>
             </Grid>
             
