@@ -38,13 +38,12 @@ namespace Bioscoop_Simulatie
 
         public BitmapImage GetSeatImage(int seatNr)
         {
-            if(seatNr < TakenSeats)
+            if(seatNr <= TakenSeats)
             {
                 return CreateBitMapImage(@"seat_taken.png");
-            } else
-            {
-                return CreateBitMapImage(@"seat_free.png");
-            }
+            } 
+
+            return CreateBitMapImage(@"seat_free.png");
         }
 
         /// <summary>

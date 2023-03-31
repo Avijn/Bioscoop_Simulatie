@@ -15,6 +15,7 @@ namespace Bioscoop_Simulatie
             Duration = duration;
             AgeRestriction = ageRestriction;
 		}
+
 		public void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

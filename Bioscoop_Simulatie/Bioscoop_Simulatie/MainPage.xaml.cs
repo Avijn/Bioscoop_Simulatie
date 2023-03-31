@@ -1,5 +1,6 @@
 
 ﻿using System.Diagnostics;
+using System.Threading;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -25,7 +26,7 @@ namespace Bioscoop_Simulatie
 
 			//Create cinema rooms
 			UIRooms = new UIRoom[3];
-      CreateRooms();
+            CreateRooms();
 
 			//Set cinema registers
 			Checkout_1 = new UICheckout(registerStatus_1); 
@@ -36,10 +37,6 @@ namespace Bioscoop_Simulatie
 
             //Set Lobby
             Lobby = new UIStation(lobbyStatus);
-
-
-            //Set hover on button to transparent
-            //CinemaControlBtn.PointerOverBackground = new SolidColorBrush();
         }
 
         /// <summary>
@@ -73,17 +70,18 @@ namespace Bioscoop_Simulatie
             Cinema.RunCinemaFlag = true;
             UpdateCinemaBtnUI(Cinema.RunCinemaFlag);
 
-            if (Cinema.IsThreadRunning)
-                return;
-
-            Cinema.IsThreadRunning = true;
-            Cinema.Run.Start();
+            if (!Cinema.Run.IsAlive)
+            {
+                Cinema.Run = new Thread(Cinema.RunCinema);
+                Cinema.Run.Start();
+            }
         }
 
         private void UpdateCinemaBtnUI(bool closed)
         {
             Windows.UI.Color color;
             string content;
+
             if(closed)
             {
                 color = Windows.UI.Color.FromArgb(255, 253, 73, 73);

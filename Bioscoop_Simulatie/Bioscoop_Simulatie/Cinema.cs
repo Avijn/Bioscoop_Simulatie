@@ -21,7 +21,7 @@ namespace Bioscoop_Simulatie
         public bool RunCheckoutsFlag { get; set; }
         public bool IsCheckoutsOpen { get; set; }
         public bool IsThreadRunning { get; set; }
-        public Thread Run { get; }
+        public Thread Run { get; set; }
         public bool RunCinemaFlag { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,7 +47,6 @@ namespace Bioscoop_Simulatie
         {
             AddRegisters();
             PopulateRooms();
-            //PopulateQueue();
         }
 
         private void PopulateQueue()
@@ -88,6 +87,9 @@ namespace Bioscoop_Simulatie
             Rooms.Add(new Room("Room 3", 9, 3000) { Movie = new Movie("LOTR: Fellowship of the Ring", 15000, 16) });
         }
 
+        /// <summary>
+        /// The main method that continuously simulates the cinema
+        /// </summary>
         public void RunCinema()
         {
             while (RunCinemaFlag)
@@ -97,7 +99,6 @@ namespace Bioscoop_Simulatie
                 if (!IsCheckoutsOpen)
                 {
                     OpenCheckouts();
-                    IsCheckoutsOpen = true;
                 }
 
                 PopulateQueue();
@@ -112,6 +113,21 @@ namespace Bioscoop_Simulatie
                     RunRooms();
                 }
             }
+
+            CleanUpCinema();
+        }
+
+        private async void CleanUpCinema()
+        {
+            Queue.Clear();
+            Lobby.Clear();
+            CloseCheckouts();
+
+            await ExecuteOnUIThread(() =>
+            {
+                OnPropertyChanged("Queue");
+                OnPropertyChanged("Lobby");
+            });
         }
 
         public async void OpenCheckouts()
@@ -120,6 +136,8 @@ namespace Bioscoop_Simulatie
             {
                 await ExecuteOnUIThread(() => checkout.CheckoutOpen());
             }
+
+            IsCheckoutsOpen = true;
         }
 
         public async void CloseCheckouts()
@@ -128,6 +146,8 @@ namespace Bioscoop_Simulatie
             {
                 await ExecuteOnUIThread(() => checkout.CheckoutClosed());
             }
+
+            IsCheckoutsOpen = false;
         }
 
         private async void HandleCheckouts()
